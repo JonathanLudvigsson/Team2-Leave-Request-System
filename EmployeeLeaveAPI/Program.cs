@@ -38,6 +38,7 @@ namespace EmployeeLeaveAPI
             app.UseAuthorization();
             
             Endpoints.UserEndpoints.RegisterEndpoints(app);
+            Endpoints.RequestEndpoints.RegisterEndpoints(app);
 
             app.Run();
         }
