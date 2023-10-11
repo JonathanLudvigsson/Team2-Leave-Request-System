@@ -45,7 +45,7 @@ namespace EmployeeLeaveAPI.Endpoints
                 try
                 {
                     var newType = await Repository.Create(newLeave);
-                    return newType != null ? Results.Ok(newType) : Results.Conflict();
+                    return newType != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
                 }
                 catch (Exception e)
                 {
