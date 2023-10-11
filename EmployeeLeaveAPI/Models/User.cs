@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EmployeeLeaveAPI.Models
 {
@@ -14,6 +15,7 @@ namespace EmployeeLeaveAPI.Models
         public string Email { get; set; }
         public string? Password { get; set; }
         public bool IsAdmin { get; set; }
+        [JsonIgnore]
         public List<Request> Requests { get; set; }
     }
 }
