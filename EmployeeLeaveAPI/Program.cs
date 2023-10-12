@@ -17,6 +17,7 @@ namespace EmployeeLeaveAPI
             builder.Services.AddAuthorization();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
+            builder.Services.AddAutoMapper(typeof(Program));
             
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
