@@ -1,6 +1,9 @@
 ﻿using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
+using EmployeeLeaveAPI.DTOs;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeLeaveAPI.Endpoints
 {
@@ -40,12 +43,13 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(404)
             .Produces(500);
 
-            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> Repository, LeaveType newLeave, ILogger logger) =>
+            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> repository, [FromBody] CreateLeaveTypeDTO newLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
             {
                 try
                 {
-                    var newType = await Repository.Create(newLeave);
-                    return newType != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
+                    LeaveType newType = mapper.Map<LeaveType>(newLeaveDTO);
+                    var result = await repository.Create(newType);
+                    return result != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
                 }
                 catch (Exception e)
                 {
@@ -56,12 +60,14 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(409)
             .Produces(500);
 
-            app.MapPut("/api/leavetypes/{id}", async (IRepository<LeaveType> repository, int id, LeaveType updatedLeave, ILogger logger) =>
+            app.MapPut("/api/leavetypes/{id}", async(IRepository<LeaveType> repository, int id, [FromBody] CreateLeaveTypeDTO updatedLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
             {
                 try
                 {
-                    var leaveToUpdate = await repository.Update(id, updatedLeave);
-                    return leaveToUpdate != null ? Results.Ok(leaveToUpdate) : Results.NotFound();
+                    LeaveType updatedLeave = mapper.Map<LeaveType>(updatedLeaveDTO);
+                    updatedLeave.LeaveTypeID = id;
+                    var result = await repository.Update(id, updatedLeave);
+                    return result != null ? Results.Ok(result) : Results.NotFound();
                 }
                 catch (Exception e)
                 {
