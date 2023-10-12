@@ -46,7 +46,7 @@ public static class UserEndpoints
             .Produces(500)
             .Produces<User>();
 
-        app.MapPut("/api/employees/{id}", async (IRepository<User> repository, int id, [FromBody] User user,
+        app.MapPut("/api/users/{id}", async (IRepository<User> repository, int id, [FromBody] User user,
                 ILogger logger, IMapper mapper) =>
             {
                 try
