@@ -116,5 +116,23 @@ public class UserLeaveBalanceEndpoints
             .Produces<User>(200)
             .Produces(404)
             .Produces(500);
+        
+        app.MapGet("/api/userleave-balances/user/{id:int}", async (int id, IUserLeaveBalanceRepository repository, ILogger logger) =>
+            {
+                try
+                {
+                    var userLeaveBalances = await repository.GetByUserId(id);
+                    return userLeaveBalances.Any() ? Results.Ok(userLeaveBalances) : Results.NotFound();
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e, "Error getting user leave balances by user id");
+                    return Results.StatusCode(500);
+                }
+            })
+            .Produces(200)
+            .Produces(404)
+            .Produces(500)
+            .Produces<IEnumerable<UserLeaveBalance>>();
     }
 }
