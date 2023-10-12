@@ -9,5 +9,6 @@ public class MappingConfig : Profile
     public MappingConfig()
     {
         CreateMap<CreateUserDTO, User>();
+        CreateMap<CreateLeaveTypeDTO, LeaveType>();
     }
 }
