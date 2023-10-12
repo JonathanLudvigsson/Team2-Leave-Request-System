@@ -7,7 +7,6 @@ namespace EmployeeLeaveAPI.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
         }
 
         public DbSet<User> Users { get; set; }
@@ -18,6 +17,10 @@ namespace EmployeeLeaveAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<UserLeaveBalance>()
+                .HasIndex(ul => new { ul.UserID, ul.LeaveTypeID })
+                .IsUnique();
 
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType
@@ -41,7 +44,7 @@ namespace EmployeeLeaveAPI.Data
                     Name = "John Doe",
                     Address = "123 Main St",
                     Email = "john@example.com",
-                    PasswordHash = "password123", // Note: You should hash and salt the password in a real application
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"),
                     IsAdmin = false
                 },
                 new User
@@ -50,7 +53,7 @@ namespace EmployeeLeaveAPI.Data
                     Name = "Admin User",
                     Address = "456 Admin Ave",
                     Email = "admin@example.com",
-                    PasswordHash = "adminpassword", // Note: You should hash and salt the password in a real application
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"),
                     IsAdmin = true
                 }
             );
@@ -72,9 +75,7 @@ namespace EmployeeLeaveAPI.Data
                     MaximumDays = 10,
                     DaysUsed = 3
                 }
-            
-        );
-     
+            );
         }
     }
 }
