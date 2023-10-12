@@ -111,7 +111,7 @@ namespace EmployeeLeaveAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -126,7 +126,7 @@ namespace EmployeeLeaveAPI.Migrations
                             Email = "john@example.com",
                             IsAdmin = false,
                             Name = "John Doe",
-                            Password = "password123"
+                            PasswordHash = "password123"
                         },
                         new
                         {
@@ -135,7 +135,7 @@ namespace EmployeeLeaveAPI.Migrations
                             Email = "admin@example.com",
                             IsAdmin = true,
                             Name = "Admin User",
-                            Password = "adminpassword"
+                            PasswordHash = "adminpassword"
                         });
                 });
 

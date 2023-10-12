@@ -41,7 +41,7 @@ namespace EmployeeLeaveAPI.Data
                     Name = "John Doe",
                     Address = "123 Main St",
                     Email = "john@example.com",
-                    Password = "password123", // Note: You should hash and salt the password in a real application
+                    PasswordHash = "password123", // Note: You should hash and salt the password in a real application
                     IsAdmin = false
                 },
                 new User
@@ -50,7 +50,7 @@ namespace EmployeeLeaveAPI.Data
                     Name = "Admin User",
                     Address = "456 Admin Ave",
                     Email = "admin@example.com",
-                    Password = "adminpassword", // Note: You should hash and salt the password in a real application
+                    PasswordHash = "adminpassword", // Note: You should hash and salt the password in a real application
                     IsAdmin = true
                 }
             );
