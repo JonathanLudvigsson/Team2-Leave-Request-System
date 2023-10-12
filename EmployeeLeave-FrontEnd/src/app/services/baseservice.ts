@@ -18,7 +18,7 @@ export class BaseService {
   }
 
   Get<T>(urlType: string, id: string): Observable<T> {
-    return this.http.get<T>(this.url + id)
+    return this.http.get<T>(this.url + urlType + id)
   }
 
 }
