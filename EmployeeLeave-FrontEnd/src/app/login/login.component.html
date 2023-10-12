@@ -5,11 +5,11 @@
 <body>
   <div class="form-container">
     <div class="form-group">
-      <form class="login-form">
+      <form class="login-form" (ngSubmit) ="Login()">
         <h1>Login</h1>
         <div class="input-group">
-          <input type="text" name="email" placeholder="Email" />
-          <input type="password" name="password" placeholder="Password" />
+          <input type="text" name="email" [(ngModel)]="email" placeholder="Email" />
+          <input type="password" name="password" [(ngModel)]="password"placeholder="Password" />
         </div>
         <button type="submit">Enter</button>
       </form>
