@@ -43,13 +43,14 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(404)
             .Produces(500);
 
-            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> repository, [FromBody] CreateLeaveTypeDTO newLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
+            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> repository, IUserLeaveBalanceRepository balanceRepo, [FromBody] CreateLeaveTypeDTO newLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
             {
                 try
                 {
                     LeaveType newType = mapper.Map<LeaveType>(newLeaveDTO);
                     var result = await repository.Create(newType);
-                    return result != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
+                    var balanceResult = await balanceRepo.AddBalancesForNewLeaveType(newType);
+                    return result != null && balanceResult != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
                 }
                 catch (Exception e)
                 {
