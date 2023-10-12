@@ -80,12 +80,24 @@ public static class UserEndpoints
             .Produces<User>();
 
         app.MapPost("/api/users", async (IRepository<User> repository, ILogger logger, IMapper mapper,
-                [FromBody] CreateUserDTO userDTO) =>
+                [FromBody] CreateUserDTO userDTO, IUserLeaveBalanceRepository userLeaveBalanceRepository,
+                IRepository<LeaveType> leaveTypeRepository) =>
             {
                 try
                 {
                     var user = mapper.Map<User>(userDTO);
+
                     var createdUser = await repository.Create(user);
+                    
+                    var updatedBalances = await userLeaveBalanceRepository.AddBalancesForNewUser
+                        (createdUser.ID, await leaveTypeRepository.GetAll());
+
+                    if (updatedBalances == null)
+                    {
+                        logger.LogError("Error creating user, could not create leave new balances");
+                        return Results.BadRequest();
+                    }
+
                     return createdUser != null
                         ? Results.Created($"/api/users/{createdUser.ID}", createdUser)
                         : Results.BadRequest();
