@@ -39,6 +39,7 @@ namespace EmployeeLeaveAPI
             
             Endpoints.UserEndpoints.RegisterEndpoints(app);
             Endpoints.LeaveTypeEndpoints.RegisterEndpoints(app);
+            Endpoints.RequestEndpoints.RegisterEndpoints(app);
 
             app.Run();
         }

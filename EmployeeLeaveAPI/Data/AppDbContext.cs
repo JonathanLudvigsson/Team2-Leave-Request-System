@@ -72,14 +72,9 @@ namespace EmployeeLeaveAPI.Data
                     MaximumDays = 10,
                     DaysUsed = 3
                 }
-            // Add more user leave balance data as needed
+            
         );
-
-            //modelBuilder.Entity<UserLeaveBalance>().HasData(
-            //    new UserLeaveBalance { UserID = 1, LeaveTypeID = 1, MaximumDays },
-            //    new UserLeaveBalance { UserID = 1, LeaveTypeID = 2, MaximumDays }
-            //);
-
+     
         }
     }
 }
