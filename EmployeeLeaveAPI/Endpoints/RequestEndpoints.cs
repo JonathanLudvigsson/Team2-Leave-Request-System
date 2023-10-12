@@ -1,4 +1,6 @@
-﻿using EmployeeLeaveAPI.Interfaces;
+﻿using AutoMapper;
+using EmployeeLeaveAPI.DTOs;
+using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -49,23 +51,27 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(500);
 
             //Post
-            app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, Request request) =>
+            app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, IMapper mapper,
+                [FromBody] CreateRequestDTO requestDto) =>
             {
                 try
                 {
-                    await repository.Create(request);
-                    return request != null ? Results.Created($"/api/request/post/{request.RequestID}", request) : Results.NoContent();
+                    var request = mapper.Map<Request>(requestDto);
+                    var createdRequest = await repository.Create(request);
+                    return createdRequest != null
+                    ? Results.Created($"/api/request/post/{createdRequest.RequestID}", createdRequest)
+                    : Results.BadRequest();
                 }
                 catch (Exception e)
                 {
 
-                    return Results.BadRequest("Internal server error" + e.Message);
+                    logger.LogError(e, "Error creating user");
+                    return Results.StatusCode(500);
                 }
             })
-            .Produces(200)
-            .Produces(204)
-            .Produces(500)
-            .Produces(201);
+            .Produces<Request>(201)
+            .Produces(400)
+            .Produces(500);
 
 
             // Delete
@@ -88,20 +94,35 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(500)
             .Produces(201);
 
-            //Update  // Inte Klar Fungerar, finns buggar 
-            app.MapPut("/api/request/update", async (IRepository<Request> repository, ILogger logger,int id, Request request) =>
+
+            app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger, IMapper mapper, int id,  Request request) =>
             {
                 try
                 {
-                    var updateRequest = await repository.Update(id, request);
-                    return updateRequest != null ? Results.Ok($"request with ID : {updateRequest.RequestID} was updated") : Results.NoContent();
+                    if (id != request.RequestID)
+                    {
+                        return Results.BadRequest($"ID:{id} does not match any existing ID");
+                    }
+                    var existingRequest = await repository.Get(id);
+                    if (existingRequest == null)
+                    {
+                        return Results.NotFound();
+                    }
+                    mapper.Map(request, existingRequest);
+                    var updatedRequest = await repository.Update(id, request);
+                    return updatedRequest != null ? Results.Ok(updatedRequest) : Results.NoContent();
                 }
                 catch (Exception e)
                 {
+                    logger.LogError(e, "Error While updating the request");
+                    return Results.StatusCode(500);
 
-                    return Results.BadRequest("Internal Server error" + e.Message);
                 }
-            });
+            })
+            .Produces(200)
+            .Produces(404)
+            .Produces(500)
+            .Produces<Request>();
 
         }
     }
