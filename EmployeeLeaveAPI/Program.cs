@@ -27,6 +27,14 @@ namespace EmployeeLeaveAPI
             builder.Services.AddDbContext<AppDbContext>(option =>
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
+            builder.Services.AddCors((setup) =>
+            {
+                setup.AddPolicy("default", (options) =>
+                {
+                    options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,6 +47,8 @@ namespace EmployeeLeaveAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseCors("default");
 
             Endpoints.UserEndpoints.RegisterEndpoints(app);
             Endpoints.LeaveTypeEndpoints.RegisterEndpoints(app);
