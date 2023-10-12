@@ -3,6 +3,7 @@ using EmployeeLeaveAPI.Data;
 using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
+using EmployeeLeaveAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveAPI
@@ -17,6 +18,8 @@ namespace EmployeeLeaveAPI
             builder.Services.AddAuthorization();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IUserLeaveBalanceRepository), typeof(UserLeaveBalanceRepository));
+            builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
             builder.Services.AddAutoMapper(typeof(Program));
 
@@ -54,6 +57,7 @@ namespace EmployeeLeaveAPI
             Endpoints.LeaveTypeEndpoints.RegisterEndpoints(app);
             Endpoints.RequestEndpoints.RegisterEndpoints(app);
             Endpoints.UserLeaveBalanceEndpoints.RegisterEndpoints(app);
+            Endpoints.AuthEndpoints.RegisterEndpoints(app);
 
             app.Run();
         }

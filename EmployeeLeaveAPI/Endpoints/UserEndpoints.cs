@@ -81,10 +81,12 @@ public static class UserEndpoints
 
         app.MapPost("/api/users", async (IRepository<User> repository, ILogger logger, IMapper mapper,
                 [FromBody] CreateUserDTO userDTO, IUserLeaveBalanceRepository userLeaveBalanceRepository,
-                IRepository<LeaveType> leaveTypeRepository) =>
+                IRepository<LeaveType> leaveTypeRepository, IAuthService authService) =>
             {
                 try
                 {
+                    userDTO.PasswordHash = authService.GeneratePasswordHash(userDTO.PasswordHash);
+                    
                     var user = mapper.Map<User>(userDTO);
 
                     var createdUser = await repository.Create(user);
