@@ -18,8 +18,9 @@ public class UserLeaveBalanceRepository : IUserLeaveBalanceRepository
     {
         return await _context.UserLeaveBalances.Where(ulb => ulb.UserID == userId).ToListAsync();
     }
-    
-    public async Task<IEnumerable<UserLeaveBalance?>>? AddBalancesForNewUser(int userId, IEnumerable<LeaveType> leaveTypes)
+
+    public async Task<IEnumerable<UserLeaveBalance?>>? AddBalancesForNewUser(int userId,
+        IEnumerable<LeaveType> leaveTypes)
     {
         List<UserLeaveBalance> balances = new();
 
@@ -37,13 +38,13 @@ public class UserLeaveBalanceRepository : IUserLeaveBalanceRepository
         await _context.UserLeaveBalances.AddRangeAsync(balances);
         await _context.SaveChangesAsync();
         return balances;
-        
+    }
+
     public async Task<IEnumerable<UserLeaveBalance?>> AddBalancesForNewLeaveType(LeaveType newLeave)
     {
         List<UserLeaveBalance> addedBalances = new List<UserLeaveBalance>();
-        foreach(User user in _context.Users.Where(u => !u.IsAdmin))
+        foreach (User user in _context.Users.Where(u => !u.IsAdmin))
         {
-
             UserLeaveBalance newLeaveBalance = new UserLeaveBalance
             {
                 LeaveTypeID = newLeave.LeaveTypeID,
