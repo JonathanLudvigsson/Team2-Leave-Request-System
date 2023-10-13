@@ -4,6 +4,9 @@ import { User } from '../models/user'
 import { LogInResult } from '../models/loginresult';
 import { LogInDTO } from '../models/logindto';
 import { LogInService } from '../services/loginservice';
+import jwtDecode, * as jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -13,25 +16,37 @@ import { LogInService } from '../services/loginservice';
 export class LoginComponent {
 
   logInResult: LogInResult = {
-    isSuccess:false,
+    isSuccess: false,
     message: '',
-    token:''
+    token: ''
   }
 
   logInDTO: LogInDTO = {
     email: '',
-    password:''
+    password: ''
   }
 
-  constructor(private logInService: LogInService) { }
+  constructor(private logInService: LogInService, private router: Router) { }
 
   users: User[] = [];
 
-  Login(): void{
+  Login(): void {
     this.logInService.LogIn(this.logInDTO).subscribe(response => {
       this.logInResult = response
       if (response.isSuccess) {
-        localStorage.setItem("sut22UserToken", response.token)
+        localStorage.setItem("sut22UserToken", response.token);
+
+        const token = response.token;
+
+
+        try {
+          const decodedToken = jwt_decode.default(token)
+          console.log(decodedToken);
+
+          this.router.navigate(['user']);
+        } catch (e) {
+
+        }
       }
       console.log(this.logInResult)
     })
