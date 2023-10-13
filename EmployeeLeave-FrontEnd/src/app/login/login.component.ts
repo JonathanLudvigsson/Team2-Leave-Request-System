@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { BaseService } from '../services/baseservice'
 import { User } from '../models/user'
+import { LogInResult } from '../models/loginresult';
+import { LogInDTO } from '../models/logindto';
+import { LogInService } from '../services/loginservice';
 
 @Component({
   selector: 'app-login',
@@ -8,14 +11,29 @@ import { User } from '../models/user'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email = "";
-  password = "";
 
-  constructor(private baseService: BaseService) { }
+  logInResult: LogInResult = {
+    isSuccess:false,
+    message: '',
+    token:''
+  }
+
+  logInDTO: LogInDTO = {
+    email: '',
+    password:''
+  }
+
+  constructor(private logInService: LogInService) { }
 
   users: User[] = [];
 
-  Login() {
-    console.log(this.email, this.password);
+  Login(): void{
+    this.logInService.LogIn(this.logInDTO).subscribe(response => {
+      this.logInResult = response
+      if (response.isSuccess) {
+        localStorage.setItem("sut22UserToken", response.token)
+      }
+      console.log(this.logInResult)
+    })
   }
 }
