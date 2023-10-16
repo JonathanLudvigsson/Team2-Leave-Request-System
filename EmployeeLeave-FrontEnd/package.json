@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^16.2.9",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.9",
+    "@ng-bootstrap/ng-bootstrap": "^15.1.1",
     "bootstrap": "^5.3.2",
     "jest-editor-support": "*",
     "jsonwebtoken": "^9.0.2",
