@@ -48,10 +48,12 @@ export class LoginComponent {
 
         try {
           if (decodedToken.IsAdmin) {
+            console.log("the user is admin")
             console.log(decodedToken.IsAdmin)
             this.router.navigate(['admin']);
           }
           else {
+            console.log("the user is not admin")
             console.log(decodedToken.IsAdmin)
             this.router.navigate(['user']);
           }

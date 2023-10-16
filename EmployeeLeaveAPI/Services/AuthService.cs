@@ -95,7 +95,7 @@ public class AuthService : IAuthService
                 new("UserId", user.ID.ToString()),
                 new("Email", user.Email),
                 new("FirstName", user.Name),
-                new("IsAdmin", user.IsAdmin.ToString())
+                new Claim("IsAdmin", user.IsAdmin ? "true" : "false")
             };
 
             var token = new JwtSecurityToken(
