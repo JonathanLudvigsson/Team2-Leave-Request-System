@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LandingComponent } from './landing/landing.component';
 import { AdminComponent } from './admin/admin.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { AdminComponent } from './admin/admin.component';
     AdminComponent
   ],
   imports: [
-    BrowserModule, HttpClientModule, AppRoutingModule,FormsModule
+    BrowserModule, HttpClientModule, AppRoutingModule, FormsModule, NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
