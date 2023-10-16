@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
-import { DecodedToken } from '../models/decodedtoken';
-import { BaseService } from 'src/app/services/baseservice';
-import { Request } from 'src/app/models/request';
+import {DecodedToken} from '../models/decodedtoken';
+import {BaseService} from 'src/app/services/baseservice';
+import {Request} from 'src/app/models/request';
 
 
 @Component({
@@ -16,12 +16,13 @@ export class UserComponent {
   myToken: DecodedToken = {
     Email: '',
     FirstName: '',
-    IsAdmin: false,
+    IsAdmin: "false",
     UserId: '-1',
     aud: '',
     exp: '',
     iss: ''
   }
+  
   newRequest: Request = {
     requestID: '',
     leaveStatus: '',
@@ -32,6 +33,16 @@ export class UserComponent {
   };
 
   request?: Request;
+  
+  request: Request = {
+    requestID: "",
+    userID: "",
+    leaveTypeID: "",
+    leaveStatus: "",
+    startDate: "",
+    endDate: ""
+  }
+  
   requests?: any[];
   baseUrl: string = 'https://localhost:7268/api/'
 
@@ -54,6 +65,7 @@ export class UserComponent {
       this.router.navigate(['/']);
     }
   }
+
   getRequestById(id: any) {
     if (id) {
       this.baseService.GetArray("request/user/", id).subscribe((response) => {
@@ -70,8 +82,5 @@ export class UserComponent {
       this.request = response;
     });
   }
-
-
-
 }
 
