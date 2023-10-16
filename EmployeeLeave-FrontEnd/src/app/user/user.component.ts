@@ -42,6 +42,9 @@ export class UserComponent {
   }
 
   requests?: any[];
+
+  public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
+
   baseUrl: string = 'https://localhost:7268/api/'
 
   constructor(private router: Router, private baseService: BaseService) {
