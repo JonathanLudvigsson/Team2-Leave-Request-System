@@ -22,7 +22,7 @@ export class UserComponent {
     exp: '',
     iss: ''
   }
-  
+
   newRequest: Request = {
     requestID: '',
     leaveStatus: '',
@@ -32,8 +32,6 @@ export class UserComponent {
     endDate: ''
   };
 
-  request?: Request;
-  
   request: Request = {
     requestID: "",
     userID: "",
@@ -42,7 +40,7 @@ export class UserComponent {
     startDate: "",
     endDate: ""
   }
-  
+
   requests?: any[];
   baseUrl: string = 'https://localhost:7268/api/'
 
