@@ -20,7 +20,9 @@ export class BaseService {
   Get<T>(urlType: string, id: string): Observable<T> {
     return this.http.get<T>(this.baseUrl + urlType + id)
   }
-
+  GetArray<T>(urlType: string, id: string): Observable<T[]> {
+    return this.http.get<T[]>(this.baseUrl + urlType + id)
+  }
   Update<T>(urlType: string, id: string, updatedEntity: T) {
     return this.http.put<T>(this.baseUrl + urlType + id, updatedEntity)
   }
