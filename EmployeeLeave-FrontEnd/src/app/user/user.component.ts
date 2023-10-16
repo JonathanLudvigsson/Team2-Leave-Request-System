@@ -22,14 +22,16 @@ export class UserComponent {
     exp: '',
     iss: ''
   }
-  request: Request = {
-    requestID: "",
-    userID: "",
-    leaveTypeID: "",
-    leaveStatus: "",
-    startDate: "",
-    endDate:""
-  }
+  newRequest: Request = {
+    requestID: '',
+    leaveStatus: '',
+    userID: '',
+    leaveTypeID: '',
+    startDate: '',
+    endDate: ''
+  };
+
+  request?: Request;
   requests?: any[];
   baseUrl: string = 'https://localhost:7268/api/'
 
@@ -40,6 +42,7 @@ export class UserComponent {
   ngOnInit() {
     this.decodeToken()
     console.log(this.myToken)
+    this.getRequestById(this.myToken.UserId)
   }
 
   decodeToken() {
@@ -53,10 +56,22 @@ export class UserComponent {
   }
   getRequestById(id: any) {
     if (id) {
-      this.baseService.GetArray("request", id).subscribe((response) => {
+      this.baseService.GetArray("request/user/", id).subscribe((response) => {
         this.requests = response;
+        console.log(response)
       })
     }
   }
+  onSubmit() {
+    this.createRequest(this.newRequest);
+  }
+  createRequest(request: Request) {
+    this.baseService.Create<Request>("request/post/", request).subscribe((response) => {
+      this.request = response;
+    });
+  }
+
+
+
 }
 
