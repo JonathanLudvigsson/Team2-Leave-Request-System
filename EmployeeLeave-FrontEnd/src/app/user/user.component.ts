@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
-import { DecodedToken } from '../models/decodedtoken';
-import { BaseService } from 'src/app/services/baseservice';
-import { Request } from 'src/app/models/request';
+import {DecodedToken} from '../models/decodedtoken';
+import {BaseService} from 'src/app/services/baseservice';
+import {Request} from 'src/app/models/request';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class UserComponent {
   myToken: DecodedToken = {
     Email: '',
     FirstName: '',
-    IsAdmin: false,
+    IsAdmin: "false",
     UserId: '-1',
     aud: '',
     exp: '',
@@ -28,7 +28,7 @@ export class UserComponent {
     leaveTypeID: "",
     leaveStatus: "",
     startDate: "",
-    endDate:""
+    endDate: ""
   }
   requests?: any[];
   baseUrl: string = 'https://localhost:7268/api/'

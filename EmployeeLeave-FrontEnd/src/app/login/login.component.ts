@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { BaseService } from '../services/baseservice'
-import { User } from '../models/user'
-import { LogInResult } from '../models/loginresult';
-import { LogInDTO } from '../models/logindto';
-import { LogInService } from '../services/loginservice';
+import {Component} from '@angular/core';
+import {BaseService} from '../services/baseservice'
+import {User} from '../models/user'
+import {LogInResult} from '../models/loginresult';
+import {LogInDTO} from '../models/logindto';
+import {LogInService} from '../services/loginservice';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
-import { Router } from '@angular/router';
-import { DecodedToken } from '../models/decodedtoken';
+import {Router} from '@angular/router';
+import {DecodedToken} from '../models/decodedtoken';
 
 
 @Component({
@@ -27,7 +27,8 @@ export class LoginComponent {
     password: ''
   }
 
-  constructor(private logInService: LogInService, private router: Router) { }
+  constructor(private logInService: LogInService, private router: Router) {
+  }
 
   users: User[] = [];
 
@@ -47,18 +48,12 @@ export class LoginComponent {
         }
 
         try {
-          if (decodedToken.IsAdmin) {
-            console.log("the user is admin")
-            console.log(decodedToken.IsAdmin)
+          if (decodedToken.IsAdmin === 'true') {
             this.router.navigate(['admin']);
-          }
-          else {
-            console.log("the user is not admin")
-            console.log(decodedToken.IsAdmin)
+          } else {
             this.router.navigate(['user']);
           }
-        }
-        catch (e) {
+        } catch (e) {
 
         }
       }

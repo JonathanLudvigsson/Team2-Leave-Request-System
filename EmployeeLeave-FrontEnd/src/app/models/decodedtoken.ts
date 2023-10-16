@@ -1,7 +1,7 @@
 export interface DecodedToken {
   Email: string
   FirstName: string
-  IsAdmin: boolean
+  IsAdmin: string
   UserId: string
   aud: string
   exp: string
