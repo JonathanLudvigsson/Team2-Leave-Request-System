@@ -6,6 +6,7 @@ import { LogInDTO } from '../models/logindto';
 import { LogInService } from '../services/loginservice';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { DecodedToken } from '../models/decodedtoken';
 
 
 @Component({
@@ -31,15 +32,31 @@ export class LoginComponent {
   users: User[] = [];
 
   Login(): void {
+    let decodedToken: DecodedToken
+
     this.logInService.LogIn(this.logInDTO).subscribe(response => {
       this.logInResult = response
+
       if (response.isSuccess) {
         localStorage.setItem("sut22UserToken", response.token);
+        var token = localStorage.getItem("sut22UserToken")
+
+        if (token != null) {
+          decodedToken = jwt_decode.default(token)
+          console.log(decodedToken)
+        }
 
         try {
-
-          this.router.navigate(['user']);
-        } catch (e) {
+          if (decodedToken.IsAdmin) {
+            console.log(decodedToken.IsAdmin)
+            this.router.navigate(['admin']);
+          }
+          else {
+            console.log(decodedToken.IsAdmin)
+            this.router.navigate(['user']);
+          }
+        }
+        catch (e) {
 
         }
       }
