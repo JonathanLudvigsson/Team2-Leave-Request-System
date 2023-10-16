@@ -5,11 +5,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
+import { LandingComponent } from './landing/landing.component';
  
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'adadada', component: UserComponent },
+  { path: '', component: LandingComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
 ];

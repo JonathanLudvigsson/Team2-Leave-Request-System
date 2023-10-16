@@ -36,12 +36,7 @@ export class LoginComponent {
       if (response.isSuccess) {
         localStorage.setItem("sut22UserToken", response.token);
 
-        const token = response.token;
-
-
         try {
-          const decodedToken = jwt_decode.default(token)
-          console.log(decodedToken);
 
           this.router.navigate(['user']);
         } catch (e) {
