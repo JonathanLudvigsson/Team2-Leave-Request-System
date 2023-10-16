@@ -50,6 +50,23 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(204)
             .Produces(500);
 
+            app.MapGet("/api/request/user/{id}", async (IRequestRepository repository, ILogger logger, int id) =>
+            {
+                try
+                {
+                    var request = await repository.GetRequestsFromUser(id);
+                    return request != null ? Results.Ok(request) : Results.NoContent();
+                }
+                catch (Exception e)
+                {
+
+                    return Results.BadRequest("Internal server error" + e.Message);
+                }
+            })
+            .Produces(200)
+            .Produces(204)
+            .Produces(500);
+
             //Post
             app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, IMapper mapper,
                 [FromBody] CreateRequestDTO requestDto) =>
