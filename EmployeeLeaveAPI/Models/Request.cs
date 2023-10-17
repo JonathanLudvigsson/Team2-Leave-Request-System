@@ -7,6 +7,7 @@ namespace EmployeeLeaveAPI.Models
     {
         [Key]
         public int RequestID { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status LeaveStatus { get; set; } = Status.Pending;
         [JsonIgnore]
         public User FKUser { get; set; }

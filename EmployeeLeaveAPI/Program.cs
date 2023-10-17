@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using EmployeeLeaveAPI.Data;
 using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;

@@ -5,6 +5,8 @@ using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EmployeeLeaveAPI.Endpoints
 {
@@ -12,7 +14,6 @@ namespace EmployeeLeaveAPI.Endpoints
     {
         public static void RegisterEndpoints(WebApplication app)
         {
-            //GetAll
             app.MapGet("/api/request", async (IRepository<Request> repository, ILogger logger) =>
                 {
                     try
@@ -31,7 +32,6 @@ namespace EmployeeLeaveAPI.Endpoints
                 .Produces(500)
                 .Produces<IEnumerable<Request>>();
 
-            //GetOneById
             app.MapGet("/api/request/{id}", async (IRepository<Request> repository, ILogger logger, int id) =>
                 {
                     try
@@ -63,8 +63,7 @@ namespace EmployeeLeaveAPI.Endpoints
                 .Produces(200)
                 .Produces(204)
                 .Produces(500);
-
-            //Post
+          
             app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, IMapper mapper,
                     [FromBody] CreateRequestDTO requestDto) =>
                 {
@@ -78,7 +77,7 @@ namespace EmployeeLeaveAPI.Endpoints
                     }
                     catch (Exception e)
                     {
-                        logger.LogError(e, "Error creating user");
+                        logger.LogError(e, "Error creating request");
                         return Results.StatusCode(500);
                     }
                 })
@@ -86,8 +85,6 @@ namespace EmployeeLeaveAPI.Endpoints
                 .Produces(400)
                 .Produces(500);
 
-
-            // Delete
             app.MapDelete("/api/request/delete/{id}", async (IRepository<Request> repository, ILogger logger, int id) =>
                 {
                     try

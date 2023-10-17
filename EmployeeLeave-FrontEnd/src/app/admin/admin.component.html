@@ -1,1 +1,24 @@
-<p>admin works!</p>
+<h1>Welcome to admin component</h1>
+<button (click)="GetAllRequests()">Update requests</button>
+<div *ngFor="let request of requests">
+  {{request.requestID}}
+  {{request.leaveStatus}}
+  {{request.userID}}
+  {{request.leaveTypeID}}
+  {{request.startDate}}
+  {{request.endDate}}
+  <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
+  <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+</div>
+<hr />
+<form (ngSubmit)="CreateLeaveType()" #requestForm="ngForm">
+  <div class="form-group">
+    <label for="userID">Leave name</label>
+    <input type="text" id="userID" name="userID" [(ngModel)]="newLeave.name" required>
+  </div>
+  <div class="form-group">
+    <label for="leaveTypeID">Maximum leave days</label>
+    <input type="text" id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newLeave.maximumDays" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Create Leave Type</button>
+</form>

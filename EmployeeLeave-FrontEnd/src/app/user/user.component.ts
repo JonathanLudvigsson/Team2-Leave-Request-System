@@ -25,7 +25,7 @@ export class UserComponent {
 
   newRequest: Request = {
     requestID: '',
-    leaveStatus: '',
+    leaveStatus: '0',
     userID: '',
     leaveTypeID: '',
     startDate: '',
