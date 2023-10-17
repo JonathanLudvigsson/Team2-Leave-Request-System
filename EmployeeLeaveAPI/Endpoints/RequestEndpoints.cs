@@ -76,8 +76,8 @@ namespace EmployeeLeaveAPI.Endpoints
                     var request = mapper.Map<Request>(requestDto);
                     var createdRequest = await repository.Create(request);
                     return createdRequest != null
-                    ? Results.Created($"/api/request/post/{createdRequest.RequestID}", createdRequest)
-                    : Results.BadRequest();
+                       ? Results.Created($"/api/request/post/{createdRequest.RequestID}", createdRequest)
+                       : Results.BadRequest();
                 }
                 catch (Exception e)
                 {
@@ -112,7 +112,7 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(201);
 
 
-            app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger, IMapper mapper, int id,  Request request) =>
+            app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger, IMapper mapper, int id, Request request) =>
             {
                 try
                 {

@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
-import {DecodedToken} from '../models/decodedtoken';
-import {BaseService} from 'src/app/services/baseservice';
-import {Request} from 'src/app/models/request';
+import { DecodedToken } from '../models/decodedtoken';
+import { BaseService } from 'src/app/services/baseservice';
+import { Request } from 'src/app/models/request';
 
 
 @Component({
@@ -24,21 +24,21 @@ export class UserComponent {
   }
 
   newRequest: Request = {
-    requestID: '',
-    leaveStatus: '',
-    userID: '',
-    leaveTypeID: '',
+    
+    leaveStatus: 0,
+    userID: 0,
+    leaveTypeID: 0,
     startDate: '',
     endDate: ''
   };
 
   request: Request = {
-    requestID: "",
-    userID: "",
-    leaveTypeID: "",
-    leaveStatus: "",
-    startDate: "",
-    endDate: ""
+    
+    leaveStatus: 0,
+    userID: 0,
+    leaveTypeID: 0,
+    startDate: '',
+    endDate: ''
   }
 
   requests?: any[];
