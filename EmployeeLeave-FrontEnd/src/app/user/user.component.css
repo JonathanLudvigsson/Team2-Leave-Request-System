@@ -1,0 +1,29 @@
+.form-group{
+    display:flex;
+    justify-content:space-around;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  width: 20%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button{
+    margin-top:2em;
+    box-shadow:1px 2px 1px gray;
+}
+
