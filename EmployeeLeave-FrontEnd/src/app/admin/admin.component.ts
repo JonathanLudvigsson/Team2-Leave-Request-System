@@ -61,8 +61,10 @@ export class AdminComponent {
     })
   }
 
-  SortRequests(status: string) {
-    this.requestsToShow = this.requests.filter(r => r.leaveStatus == status)
+  async SortRequests(status: string) {
+    this.baseService.GetAll<Request>("request").subscribe(response => {
+      this.requestsToShow = response.filter(r => r.leaveStatus == status)
+    })
   }
 
   ApproveOrDenyRequest(request: Request, approved: boolean) {

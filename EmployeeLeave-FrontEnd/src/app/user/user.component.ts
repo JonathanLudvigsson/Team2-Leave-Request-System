@@ -11,8 +11,11 @@ import {AuthService} from "../services/auth.service";
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
+
 export class UserComponent {
 
+  requestStatus: string[] = ['Pending', 'Approved', 'Declined', ''];
+ 
   myToken: DecodedToken = {
     Email: '',
     FirstName: '',
@@ -44,6 +47,8 @@ export class UserComponent {
   requests?: any[];
 
   public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
+
+  showForm = false;
 
   baseUrl: string = 'https://localhost:7268/api/'
 
@@ -87,5 +92,8 @@ export class UserComponent {
       this.request = response;
     });
   }
-}
 
+  getRequestCount(status: string): number {
+    return this.requestStatus.filter(request => request === status).length;
+  }
+}
