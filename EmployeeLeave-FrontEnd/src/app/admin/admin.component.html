@@ -1,1 +1,12 @@
-<p>admin works!</p>
+<h1>Welcome to admin component</h1>
+<button (click)="GetAllRequests()">Update requests</button>
+<div *ngFor="let request of requests">
+  {{request.requestID}}
+  {{request.leaveStatus}}
+  {{request.userID}}
+  {{request.leaveTypeID}}
+  {{request.startDate}}
+  {{request.endDate}}
+  <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
+  <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+</div>

@@ -5,6 +5,8 @@ using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EmployeeLeaveAPI.Endpoints
 {
@@ -81,7 +83,6 @@ namespace EmployeeLeaveAPI.Endpoints
                 }
                 catch (Exception e)
                 {
-
                     logger.LogError(e, "Error creating user");
                     return Results.StatusCode(500);
                 }
@@ -112,7 +113,7 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(201);
 
 
-            app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger, IMapper mapper, int id,  Request request) =>
+            app.MapPut("/api/request/update/{id}", async(IRepository < Request > repository, ILogger logger, IMapper mapper, int id, [FromBody]Request request) =>
             {
                 try
                 {
@@ -125,6 +126,7 @@ namespace EmployeeLeaveAPI.Endpoints
                     {
                         return Results.NotFound();
                     }
+
                     mapper.Map(request, existingRequest);
                     var updatedRequest = await repository.Update(id, request);
                     return updatedRequest != null ? Results.Ok(updatedRequest) : Results.NoContent();
