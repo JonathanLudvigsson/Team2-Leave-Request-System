@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-import {BaseService} from '../services/baseservice'
 import {User} from '../models/user'
 import {LogInResult} from '../models/loginresult';
 import {LogInDTO} from '../models/logindto';
 import {LogInService} from '../services/loginservice';
-import jwtDecode, * as jwt_decode from 'jwt-decode';
+import * as jwt_decode from 'jwt-decode';
 import {Router} from '@angular/router';
 import {DecodedToken} from '../models/decodedtoken';
+import {AuthService} from "../services/auth.service";
 
 
 @Component({
@@ -27,7 +27,7 @@ export class LoginComponent {
     password: ''
   }
 
-  constructor(private logInService: LogInService, private router: Router) {
+  constructor(private logInService: LogInService, private router: Router, private authService: AuthService) {
   }
 
   users: User[] = [];
@@ -44,11 +44,13 @@ export class LoginComponent {
 
         if (token != null) {
           decodedToken = jwt_decode.default(token)
-          console.log(decodedToken)
         }
+
+        this.authService._isLoggedIn.next(true);
 
         try {
           if (decodedToken.IsAdmin === 'true') {
+            this.authService._isAdmin.next(true);
             this.router.navigate(['admin']);
           } else {
             this.router.navigate(['user']);
@@ -57,7 +59,6 @@ export class LoginComponent {
 
         }
       }
-      console.log(this.logInResult)
     })
   }
 }

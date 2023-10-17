@@ -1,10 +1,12 @@
 <div class="navbar">
   <div class="d-flex flex-row d-none d-md-block p-2">
     <h3 class="list-inline-item font-weight-bold"><a class="nav-link" href="/">Home</a></h3>
-    <h3 class="list-inline-item"><a class="nav-link" href="/login">Login</a></h3>
+    <h3 class="list-inline-item" *ngIf="!isLoggedIn"><a class="nav-link" href="/login">Login</a></h3>
+    <h3 class="list-inline-item" *ngIf="isLoggedIn && isAdmin"><a class="nav-link" href="/admin">Admin Dashboard</a></h3>
+    <h3 class="list-inline-item" *ngIf="isLoggedIn && !isAdmin"><a class="nav-link" href="/user">User Dashboard</a></h3>
+    <h3 class="list-inline-item" *ngIf="isLoggedIn"><a class="nav-link" (click)="logout()" href="#">Logout</a></h3>
   </div>
 </div>
-
 
 <div ngbDropdown class="d-md-none dropdown d-flex flex-row-reverse p-2">
   <button ngbDropdownToggle class="btn btn-primary" type="button" id="dropdownMenuButton1" aria-expanded="false">
@@ -12,6 +14,9 @@
   </button>
   <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
     <li><a ngbDropdownItem href="/">Home</a></li>
-    <li><a ngbDropdownItem href="/login">Login</a></li>
+    <li *ngIf="!isLoggedIn"><a ngbDropdownItem href="/login">Login</a></li>
+    <li *ngIf="isLoggedIn && isAdmin"><a ngbDropdownItem href="/admin">Admin Dashboard</a></li>
+    <li *ngIf="isLoggedIn && !isAdmin"><a ngbDropdownItem href="/user">User Dashboard</a></li>
+    <li *ngIf="isLoggedIn"><a ngbDropdownItem (click)="logout()" href="#">Logout</a></li>
   </ul>
 </div>
