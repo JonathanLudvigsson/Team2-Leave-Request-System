@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import jwtDecode, * as jwt_decode from 'jwt-decode';
-import {DecodedToken} from '../models/decodedtoken';
-import {BaseService} from 'src/app/services/baseservice';
-import {Request} from 'src/app/models/request';
+import { DecodedToken } from '../models/decodedtoken';
+import { BaseService } from 'src/app/services/baseservice';
+import { Request } from 'src/app/models/request';
 
 
 @Component({
@@ -13,6 +13,8 @@ import {Request} from 'src/app/models/request';
 })
 export class UserComponent {
 
+  requestStatus: string[] = ['Pending', 'Approved', 'Declined', ''];
+ 
   myToken: DecodedToken = {
     Email: '',
     FirstName: '',
@@ -44,6 +46,8 @@ export class UserComponent {
   requests?: any[];
 
   public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
+
+  showForm = false;
 
   baseUrl: string = 'https://localhost:7268/api/'
 
@@ -83,5 +87,12 @@ export class UserComponent {
       this.request = response;
     });
   }
+
+  getRequestCount(status: string): number {
+    return this.requestStatus.filter(request => request === status).length;
+  }
+
+ 
+
 }
 

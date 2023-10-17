@@ -25,5 +25,19 @@ input[type="datetime-local"] {
 button{
     margin-top:2em;
     box-shadow:1px 2px 1px gray;
+    
+}
+.buttonPos{
+    display:flex;
+    justify-content:flex-end;
+    margin-right:4em;
+    margin-bottom:2em;
+}
+.request-list{
+    display:flex;
+    flex-direction:row;
+}
+.request-container{
+    margin-right:2em;
 }
 
