@@ -1,5 +1,5 @@
 export interface LeaveType {
-  leaveTypeId: string
+  leaveTypeID: string
   name: string
   maximumDays: string
 }

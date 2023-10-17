@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseService } from '../services/baseservice';
 import { Request } from '../models/request'
+import { LeaveType } from '../models/leavetype';
 
 @Component({
   selector: 'app-admin',
@@ -14,6 +15,12 @@ export class AdminComponent {
   }
 
   requests: Request[] = []
+
+  newLeave: LeaveType = {
+    leaveTypeID: '-1',
+    name: '',
+    maximumDays: ''
+  }
 
   ngOnInit() {
     this.GetAllRequests()
@@ -34,6 +41,12 @@ export class AdminComponent {
     }
     this.baseService.Update<Request>("request/update/", request.requestID, request).subscribe(response => {
       console.log(response)
+    })
+  }
+
+  CreateLeaveType() {
+    this.baseService.Create<LeaveType>("leavetypes", this.newLeave).subscribe(response => {
+
     })
   }
 
