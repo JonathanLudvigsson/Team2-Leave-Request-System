@@ -5,8 +5,6 @@ using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
