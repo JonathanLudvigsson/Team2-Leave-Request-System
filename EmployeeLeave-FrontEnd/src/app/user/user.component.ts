@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import jwtDecode, * as jwt_decode from 'jwt-decode';
 import {DecodedToken} from '../models/decodedtoken';
 import {BaseService} from 'src/app/services/baseservice';
 import {Request} from 'src/app/models/request';
+import {AuthService} from "../services/auth.service";
 
 
 @Component({
@@ -47,24 +47,26 @@ export class UserComponent {
 
   baseUrl: string = 'https://localhost:7268/api/'
 
-  constructor(private router: Router, private baseService: BaseService) {
+  constructor(private router: Router, private baseService: BaseService, private authService: AuthService) {
 
   }
 
   ngOnInit() {
-    this.decodeToken()
-    console.log(this.myToken)
-    this.getRequestById(this.myToken.UserId)
+    this.AuthenticateUser();
   }
 
-  decodeToken() {
-    var token = localStorage.getItem("sut22UserToken")
-    if (token != null) {
-      const decodedToken: DecodedToken = jwt_decode.default(token)
-      this.myToken = decodedToken
-    } else {
-      this.router.navigate(['/']);
-    }
+  AuthenticateUser() {
+    this.authService.isLoggedIn$.subscribe(response => {
+      if (!response) {
+        this.router.navigate(['/']);
+      }
+    });
+    this.authService.isAdmin$.subscribe(response => {
+        if (response) {
+          this.router.navigate(['/']);
+        }
+      }
+    );
   }
 
   getRequestById(id: any) {
@@ -75,9 +77,11 @@ export class UserComponent {
       })
     }
   }
+
   onSubmit() {
     this.createRequest(this.newRequest);
   }
+
   createRequest(request: Request) {
     this.baseService.Create<Request>("request/post/", request).subscribe((response) => {
       this.request = response;

@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { BaseService } from '../services/baseservice';
-import { Request } from '../models/request'
-import { LeaveType } from '../models/leavetype';
-import { User } from '../models/user';
+import {Component} from '@angular/core';
+import {BaseService} from '../services/baseservice';
+import {Request} from '../models/request'
+import {LeaveType} from '../models/leavetype';
+import {User} from '../models/user';
+import {AuthService} from "../services/auth.service";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +13,7 @@ import { User } from '../models/user';
 })
 export class AdminComponent {
 
-  constructor(private baseService: BaseService) {
+  constructor(private baseService: BaseService, private authService: AuthService, private router: Router) {
 
   }
 
@@ -30,6 +32,20 @@ export class AdminComponent {
   ngOnInit() {
     this.GetAllRequests()
     this.GetAllUsers()
+    this.AuthenticateAdmin()
+  }
+
+  AuthenticateAdmin() {
+    this.authService.isLoggedIn$.subscribe(response => {
+      if (!response) {
+        this.router.navigate(['/']);
+      }
+    });
+    this.authService.isAdmin$.subscribe(response => {
+      if (!response) {
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   GetAllUsers() {
@@ -38,7 +54,7 @@ export class AdminComponent {
     })
   }
 
-   GetAllRequests() {
+  GetAllRequests() {
     this.baseService.GetAll<Request>("request").subscribe(response => {
       this.requests = response
       this.requestsToShow = this.requests
@@ -52,8 +68,7 @@ export class AdminComponent {
   ApproveOrDenyRequest(request: Request, approved: boolean) {
     if (approved == true) {
       request.leaveStatus = '1'
-    }
-    else {
+    } else {
       request.leaveStatus = '2'
     }
     this.baseService.Update<Request>("request/update/", request.requestID, request).subscribe(response => {
@@ -63,19 +78,16 @@ export class AdminComponent {
 
   CreateLeaveType() {
     this.baseService.Create<LeaveType>("leavetypes", this.newLeave).subscribe(response => {
-
     })
   }
 
   EditLeaveType(id: string) {
     this.baseService.Update<LeaveType>("leavetypes/", id, this.newLeave).subscribe(response => {
-
     })
   }
 
   DeleteLeaveType(id: string) {
     this.baseService.Delete<LeaveType>("leavetypes/", id).subscribe(response => {
-
     })
   }
 
