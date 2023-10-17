@@ -13,6 +13,7 @@ namespace EmployeeLeaveAPI.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<UserLeaveBalance> UserLeaveBalances { get; set; }
+        public DbSet<ApprovedLeave> ApprovedLeaves { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,24 @@ namespace EmployeeLeaveAPI.Data
             modelBuilder.Entity<UserLeaveBalance>()
                 .HasIndex(ul => new { ul.UserID, ul.LeaveTypeID })
                 .IsUnique();
+            
+            modelBuilder.Entity<ApprovedLeave>()
+                .HasOne(p => p.Request)
+                .WithMany() // Or with navigation property if it exists.
+                .HasForeignKey(p => p.RequestId)
+                .OnDelete(DeleteBehavior.Restrict);
+    
+            modelBuilder.Entity<ApprovedLeave>()
+                .HasOne(p => p.User)
+                .WithMany() // Or with navigation property if it exists.
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ApprovedLeave>()
+                .HasOne(p => p.LeaveType)
+                .WithMany() // Or with navigation property if it exists.
+                .HasForeignKey(p => p.LeaveTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType
