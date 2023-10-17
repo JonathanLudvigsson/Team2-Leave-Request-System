@@ -20,6 +20,7 @@ namespace EmployeeLeaveAPI
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IUserLeaveBalanceRepository), typeof(UserLeaveBalanceRepository));
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            builder.Services.AddScoped(typeof(IApprovedLeavesService), typeof(ApprovedLeavesService));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
             builder.Services.AddScoped(typeof(IRequestRepository), typeof(RequestRepository));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
@@ -60,6 +61,7 @@ namespace EmployeeLeaveAPI
             Endpoints.RequestEndpoints.RegisterEndpoints(app);
             Endpoints.UserLeaveBalanceEndpoints.RegisterEndpoints(app);
             Endpoints.AuthEndpoints.RegisterEndpoints(app);
+            Endpoints.ApprovedLeavesEndpoints.RegisterEndpoints(app);
 
             app.Run();
         }
