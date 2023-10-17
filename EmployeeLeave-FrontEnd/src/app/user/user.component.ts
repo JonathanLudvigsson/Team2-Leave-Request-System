@@ -4,6 +4,7 @@ import {DecodedToken} from '../models/decodedtoken';
 import {BaseService} from 'src/app/services/baseservice';
 import {Request} from 'src/app/models/request';
 import {AuthService} from "../services/auth.service";
+import * as jwt_decode from 'jwt-decode';
 
 
 @Component({
@@ -15,7 +16,7 @@ import {AuthService} from "../services/auth.service";
 export class UserComponent {
 
   requestStatus: string[] = ['Pending', 'Approved', 'Declined', ''];
- 
+
   myToken: DecodedToken = {
     Email: '',
     FirstName: '',
@@ -57,10 +58,22 @@ export class UserComponent {
   }
 
   ngOnInit() {
-    this.AuthenticateUser();
+    this.decodeToken();
+    this.authenticateUser();
+    this.getRequestById(this.myToken.UserId)
   }
 
-  AuthenticateUser() {
+  decodeToken() {
+    var token = localStorage.getItem("sut22UserToken")
+    if (token != null) {
+      const decodedToken: DecodedToken = jwt_decode.default(token)
+      this.myToken = decodedToken
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+
+  authenticateUser() {
     this.authService.isLoggedIn$.subscribe(response => {
       if (!response) {
         this.router.navigate(['/']);
