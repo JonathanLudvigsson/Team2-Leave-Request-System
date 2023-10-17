@@ -63,12 +63,19 @@ namespace EmployeeLeaveAPI.Endpoints
                 .Produces(200)
                 .Produces(204)
                 .Produces(500);
-          
+
             app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, IMapper mapper,
-                    [FromBody] CreateRequestDTO requestDto) =>
+                    [FromBody] CreateRequestDTO requestDto, IRequestService requestService) =>
                 {
                     try
                     {
+                        var checkDates = requestService.CheckValidDates(requestDto.StartDate, requestDto.EndDate).Result;
+                        
+                        if (!checkDates.isOk)
+                        {
+                            return Results.BadRequest(checkDates.message);
+                        }
+                        
                         var request = mapper.Map<Request>(requestDto);
                         var createdRequest = await repository.Create(request);
                         return createdRequest != null
@@ -107,13 +114,20 @@ namespace EmployeeLeaveAPI.Endpoints
 
             app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger,
                     IMapper mapper, int id, Request request,
-                    IApprovedLeavesService approvedLeavesService) =>
+                    IApprovedLeavesService approvedLeavesService, IRequestService requestService) =>
                 {
                     try
                     {
                         if (id != request.RequestID)
                         {
                             return Results.BadRequest($"ID:{id} does not match any existing ID");
+                        }
+                        
+                        var checkDates = requestService.CheckValidDates(request.StartDate, request.EndDate).Result;
+                        
+                        if (!checkDates.isOk)
+                        {
+                            return Results.BadRequest(checkDates.message);
                         }
 
                         var existingRequest = await repository.Get(id);

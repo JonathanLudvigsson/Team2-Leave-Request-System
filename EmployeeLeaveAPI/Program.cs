@@ -22,6 +22,7 @@ namespace EmployeeLeaveAPI
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddScoped(typeof(IApprovedLeavesService), typeof(ApprovedLeavesService));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            builder.Services.AddScoped(typeof(IRequestService), typeof(RequestService));
             builder.Services.AddScoped(typeof(IRequestRepository), typeof(RequestRepository));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
             builder.Services.AddAutoMapper(typeof(Program));
