@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using EmployeeLeaveAPI.Data;
 using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
@@ -23,6 +24,11 @@ namespace EmployeeLeaveAPI
             builder.Services.AddScoped(typeof(IRequestRepository), typeof(RequestRepository));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
             builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
