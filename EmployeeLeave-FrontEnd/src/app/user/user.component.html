@@ -1,62 +1,51 @@
+<div class="m-3">
+  <h1>Welcome {{ this.userName}}</h1>
+  <p class="mt-2">You have {{ this.pendingRequests }} pending leave requests, {{ this.approvedRequests }} approved leave requests
+    and {{ this.declinedRequests }} declined leave requests.</p>
 
-<div class="request-group">
-  <div class="request-list">
-    <div class="request-container">
-      <p>Pending: {{ this.pendingRequests }}</p>
-    </div>
-    <div class="request-container">
-      <p>Approved: {{ this.approvedRequests }}</p>
-    </div>
-    <div class="request-container">
-      <p>Declined: {{ this.declinedRequests }}</p>
-    </div>
+  <div class="my-5">
+    <h2>Apply for leave</h2>
+    <form (ngSubmit)="onSubmit()" #requestForm="ngForm">
+      <div>
+        <label for="leaveTypeID">Leave Type:</label>
+        <select id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newRequest.leaveTypeID" required>
+          <option *ngFor="let type of leaveTypes" [value]="type.leaveTypeID">{{ type.name }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="startDate">Start Date:</label>
+        <input type="datetime-local" id="startDate" name="startDate" [(ngModel)]="newRequest.startDate" required>
+      </div>
+      <div>
+        <label for="endDate">End Date:</label>
+        <input type="datetime-local" id="endDate" name="endDate" [(ngModel)]="newRequest.endDate" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Apply for leave</button>
+      </div>
+    </form>
   </div>
-</div>
 
-<div class="buttonPos">
-  <button class="btn btn-primary" (click)="showForm = !showForm">Create New Leave Request</button>
-</div>
-
-<div class="request-container">
-  <table class="table request-table">
-    <thead>
+  <h2>Current leave requests</h2>
+  <div class="request-container">
+    <table class="table request-table">
+      <thead>
       <tr>
+        <th>Leave Type</th>
         <th>Leave Status</th>
         <th>Start Date</th>
         <th>End Date</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let item of requests">
+        <td>{{ getLeaveTypeName(item.leaveTypeID) }}</td>
+
         <td>{{ item.leaveStatus }}</td>
-        <td>{{ item.startDate }}</td>
-        <td>{{ item.endDate }}</td>
+        <td>{{ item.startDate.split('T')[0] }}</td>
+        <td>{{ item.endDate.split('T')[0] }}</td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<form (ngSubmit)="onSubmit()" #requestForm="ngForm" *ngIf="showForm">
-  <div class="form-group">
-    <label for="leaveStatus">Leave Status:</label>
-    <input type="text" id="leaveStatus" name="leaveStatus" [(ngModel)]="newRequest.leaveStatus" required>
-  </div>
-  <div class="form-group">
-    <label for="userID">User ID:</label>
-    <input type="text" id="userID" name="userID" [(ngModel)]="newRequest.userID" required>
-  </div>
-  <div class="form-group">
-    <label for="leaveTypeID">Leave Type ID:</label>
-    <input type="text" id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newRequest.leaveTypeID" required>
-  </div>
-  <div class="form-group">
-    <label for="startDate">Start Date:</label>
-    <input type="datetime-local" id="startDate" name="startDate" [(ngModel)]="newRequest.startDate" required>
-  </div>
-  <div class="form-group">
-    <label for="endDate">End Date:</label>
-    <input type="datetime-local" id="endDate" name="endDate" [(ngModel)]="newRequest.endDate" required>
-    <button type="submit" class="btn btn-primary">Apply for leave</button>
-  </div>
-
-</form>
