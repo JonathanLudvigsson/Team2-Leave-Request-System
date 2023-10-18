@@ -5,6 +5,7 @@ import {BaseService} from 'src/app/services/baseservice';
 import {Request} from 'src/app/models/request';
 import {AuthService} from "../services/auth.service";
 import * as jwt_decode from 'jwt-decode';
+import {LeaveType} from "../models/leavetype";
 
 
 @Component({
@@ -30,7 +31,7 @@ export class UserComponent {
   newRequest: Request = {
     requestID: '',
     leaveStatus: '0',
-    userID: '',
+    userID: this.myToken.UserId,
     leaveTypeID: '',
     startDate: '',
     endDate: ''
@@ -46,16 +47,15 @@ export class UserComponent {
   }
 
   requests?: any[];
-
   public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
-
   showForm = false;
-
   baseUrl: string = 'https://localhost:7268/api/'
-
   public approvedRequests: number = 0;
   public pendingRequests: number = 0;
   public declinedRequests: number = 0;
+  public userName: string = '';
+  public userId: string = '';
+  public leaveTypes: LeaveType[] = [];
 
   constructor(private router: Router, private baseService: BaseService, private authService: AuthService) {
 
@@ -66,6 +66,19 @@ export class UserComponent {
     this.authenticateUser();
     this.getRequestById(this.myToken.UserId);
     this.updateRequestNumbers();
+    this.setLoggedInUser();
+    this.fetchLeaveTypes();
+  }
+
+  fetchLeaveTypes() {
+    this.baseService.GetAll<LeaveType>("leavetypes").subscribe((response) => {
+      this.leaveTypes = response;
+    })
+  }
+
+  setLoggedInUser() {
+    this.userName = this.myToken.FirstName;
+    this.userId = this.myToken.UserId;
   }
 
   decodeToken() {
@@ -92,6 +105,12 @@ export class UserComponent {
     );
   }
 
+  getLeaveTypeName(leaveTypeID: string): string {
+    const leaveType = this.leaveTypes.find(type => type.leaveTypeID === leaveTypeID);
+    return leaveType ? leaveType.name : 'N/A';  // return 'N/A' if the type is not found
+  }
+
+
   getRequestById(id: any) {
     if (id) {
       this.baseService.GetArray("request/user/", id).subscribe((response) => {
@@ -106,6 +125,8 @@ export class UserComponent {
   }
 
   createRequest(request: Request) {
+    request.userID = this.myToken.UserId;
+    request.leaveStatus = 'Pending';
     this.baseService.Create<Request>("request/post/", request).subscribe((response) => {
       this.request = response;
     });
