@@ -90,15 +90,6 @@ public static class UserEndpoints
                     var user = mapper.Map<User>(userDTO);
 
                     var createdUser = await repository.Create(user);
-                    
-                    var updatedBalances = await userLeaveBalanceRepository.AddBalancesForNewUser
-                        (createdUser.ID, await leaveTypeRepository.GetAll());
-
-                    if (updatedBalances == null)
-                    {
-                        logger.LogError("Error creating user, could not create leave new balances");
-                        return Results.BadRequest();
-                    }
 
                     return createdUser != null
                         ? Results.Created($"/api/users/{createdUser.ID}", createdUser)

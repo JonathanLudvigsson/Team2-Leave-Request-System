@@ -7,14 +7,16 @@ public class ApprovedLeavesService : IApprovedLeavesService
 {
     private readonly IRepository<ApprovedLeave> _approvedLeavesRepository;
     private readonly ILogger<ApprovedLeavesService> _logger;
-    
-    public ApprovedLeavesService(IRepository<ApprovedLeave> approvedLeavesRepository, ILogger<ApprovedLeavesService> logger)
+
+    public ApprovedLeavesService(IRepository<ApprovedLeave> approvedLeavesRepository,
+        ILogger<ApprovedLeavesService> logger)
     {
         _approvedLeavesRepository = approvedLeavesRepository;
         _logger = logger;
     }
 
-    public async Task CreateApprovedLeave(DateTime startDate, DateTime endDate, int userId, int leaveTypeId, int requestId)
+    public async Task CreateApprovedLeave(DateTime startDate, DateTime endDate, int userId, int leaveTypeId,
+        int requestId)
     {
         try
         {

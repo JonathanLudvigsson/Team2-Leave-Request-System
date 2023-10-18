@@ -12,23 +12,18 @@ namespace EmployeeLeaveAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<UserLeaveBalance> UserLeaveBalances { get; set; }
         public DbSet<ApprovedLeave> ApprovedLeaves { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.Entity<UserLeaveBalance>()
-                .HasIndex(ul => new { ul.UserID, ul.LeaveTypeID })
-                .IsUnique();
-            
+
             modelBuilder.Entity<ApprovedLeave>()
                 .HasOne(p => p.Request)
                 .WithMany() // Or with navigation property if it exists.
                 .HasForeignKey(p => p.RequestId)
                 .OnDelete(DeleteBehavior.Restrict);
-    
+
             modelBuilder.Entity<ApprovedLeave>()
                 .HasOne(p => p.User)
                 .WithMany() // Or with navigation property if it exists.
@@ -74,25 +69,6 @@ namespace EmployeeLeaveAPI.Data
                     Email = "admin@example.com",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("password"),
                     IsAdmin = true
-                }
-            );
-
-            modelBuilder.Entity<UserLeaveBalance>().HasData(
-                new UserLeaveBalance
-                {
-                    ID = 1,
-                    UserID = 1,
-                    LeaveTypeID = 1,
-                    MaximumDays = 20,
-                    DaysUsed = 5
-                },
-                new UserLeaveBalance
-                {
-                    ID = 2,
-                    UserID = 1,
-                    LeaveTypeID = 2,
-                    MaximumDays = 10,
-                    DaysUsed = 3
                 }
             );
         }

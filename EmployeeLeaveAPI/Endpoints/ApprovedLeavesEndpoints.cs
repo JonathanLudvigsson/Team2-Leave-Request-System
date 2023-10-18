@@ -46,12 +46,12 @@ public class ApprovedLeavesEndpoints
             .Produces(500)
             .Produces<IEnumerable<ApprovedLeave>>();
 
-        app.MapGet("/api/approved-leaves/leavetypes/{id:int}",
-                async (IApprovedLeavesRepository approvedLeavesRepository, ILogger logger, int id) =>
+        app.MapGet("/api/approved-leaves/leavetypes/{leaveTypeId:int}",
+                async (IApprovedLeavesRepository approvedLeavesRepository, ILogger logger, int leaveTypeId) =>
                 {
                     try
                     {
-                        var approvedLeaves = await approvedLeavesRepository.GetByLeaveType(id);
+                        var approvedLeaves = await approvedLeavesRepository.GetByLeaveType(leaveTypeId);
                         return approvedLeaves.Any() ? Results.Ok(approvedLeaves) : Results.NoContent();
                     }
                     catch (Exception e)
