@@ -49,8 +49,7 @@ namespace EmployeeLeaveAPI.Endpoints
                 {
                     LeaveType newType = mapper.Map<LeaveType>(newLeaveDTO);
                     var result = await repository.Create(newType);
-                    var balanceResult = await balanceRepo.AddBalancesForNewLeaveType(newType);
-                    return result != null && balanceResult != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
+                    return result != null ? Results.Created($"/api/leavetypes/{newType.LeaveTypeID}", newType) : Results.Conflict();
                 }
                 catch (Exception e)
                 {

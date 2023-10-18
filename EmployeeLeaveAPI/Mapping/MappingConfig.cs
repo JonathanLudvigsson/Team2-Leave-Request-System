@@ -10,7 +10,6 @@ public class MappingConfig : Profile
     {
         CreateMap<CreateUserDTO, User>();
         CreateMap<CreateRequestDTO, Request>();
-        CreateMap<CreateUserLeaveBalanceDTO, UserLeaveBalance>();
         CreateMap<CreateLeaveTypeDTO, LeaveType>();
     }
 }

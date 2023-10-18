@@ -1,6 +1,5 @@
 using EmployeeLeaveAPI.Data;
 using EmployeeLeaveAPI.Interfaces;
-using EmployeeLeaveAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveAPI.Repositories;
@@ -8,58 +7,28 @@ namespace EmployeeLeaveAPI.Repositories;
 public class UserLeaveBalanceRepository : IUserLeaveBalanceRepository
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<UserLeaveBalanceRepository> _logger;
 
-    public UserLeaveBalanceRepository(AppDbContext context)
+    public UserLeaveBalanceRepository(AppDbContext context, ILogger<UserLeaveBalanceRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
-    public async Task<IEnumerable<UserLeaveBalance?>> GetByUserId(int userId)
+    public async Task<int> GetUserLeaveUsedDaysByLeaveType(int userId, int leaveTypeId)
     {
-        return await _context.UserLeaveBalances.Where(ulb => ulb.UserID == userId).ToListAsync();
-    }
-
-    public async Task<IEnumerable<UserLeaveBalance?>>? AddBalancesForNewUser(int userId,
-        IEnumerable<LeaveType> leaveTypes)
-    {
-        List<UserLeaveBalance> balances = new();
-
-        foreach (var leaveType in leaveTypes)
+        try
         {
-            balances.Add(new UserLeaveBalance
-            {
-                UserID = userId,
-                LeaveTypeID = leaveType.LeaveTypeID,
-                MaximumDays = leaveType.MaximumDays,
-                DaysUsed = 0
-            });
+            var leaves = await _context.ApprovedLeaves
+                .Where(l => l.UserId == userId && l.LeaveTypeId == leaveTypeId)
+                .ToListAsync();
+
+            return leaves.Sum(l => (int)(l.EndDate - l.StartDate).TotalDays + 1);
         }
-
-        await _context.UserLeaveBalances.AddRangeAsync(balances);
-        await _context.SaveChangesAsync();
-        return balances;
-    }
-
-    public async Task<IEnumerable<UserLeaveBalance?>> AddBalancesForNewLeaveType(LeaveType newLeave)
-    {
-        List<UserLeaveBalance> addedBalances = new List<UserLeaveBalance>();
-        foreach (User user in _context.Users.Where(u => !u.IsAdmin))
+        catch (Exception e)
         {
-            UserLeaveBalance newLeaveBalance = new UserLeaveBalance
-            {
-                LeaveTypeID = newLeave.LeaveTypeID,
-                FKLeaveType = newLeave,
-                UserID = user.ID,
-                FKUser = user,
-                MaximumDays = newLeave.MaximumDays,
-                DaysUsed = 0
-            };
-
-            await _context.UserLeaveBalances.AddAsync(newLeaveBalance);
-            addedBalances.Add(newLeaveBalance);
+            _logger.LogError(e, "Error getting leave balance");
+            throw new Exception("Error getting leave balance + " + e.Message);
         }
-
-        await _context.SaveChangesAsync();
-        return addedBalances;
     }
 }
