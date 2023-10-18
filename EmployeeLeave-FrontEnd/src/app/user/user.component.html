@@ -2,13 +2,13 @@
 <div class="request-group">
   <div class="request-list">
     <div class="request-container">
-      <p>Pending: {{ getRequestCount('Pending') }}</p>
+      <p>Pending: {{ this.pendingRequests }}</p>
     </div>
     <div class="request-container">
-      <p>Approved: {{ getRequestCount('Approved') }}</p>
+      <p>Approved: {{ this.approvedRequests }}</p>
     </div>
     <div class="request-container">
-      <p>Declined: {{ getRequestCount('Declined') }}</p>
+      <p>Declined: {{ this.declinedRequests }}</p>
     </div>
   </div>
 </div>

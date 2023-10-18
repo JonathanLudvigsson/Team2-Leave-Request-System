@@ -53,6 +53,10 @@ export class UserComponent {
 
   baseUrl: string = 'https://localhost:7268/api/'
 
+  public approvedRequests: number = 0;
+  public pendingRequests: number = 0;
+  public declinedRequests: number = 0;
+
   constructor(private router: Router, private baseService: BaseService, private authService: AuthService) {
 
   }
@@ -60,7 +64,8 @@ export class UserComponent {
   ngOnInit() {
     this.decodeToken();
     this.authenticateUser();
-    this.getRequestById(this.myToken.UserId)
+    this.getRequestById(this.myToken.UserId);
+    this.updateRequestNumbers();
   }
 
   decodeToken() {
@@ -91,7 +96,7 @@ export class UserComponent {
     if (id) {
       this.baseService.GetArray("request/user/", id).subscribe((response) => {
         this.requests = response;
-        console.log(response)
+        this.updateRequestNumbers();
       })
     }
   }
@@ -107,6 +112,15 @@ export class UserComponent {
   }
 
   getRequestCount(status: string): number {
-    return this.requestStatus.filter(request => request === status).length;
+    if (!this.requests) return 0;
+    return this.requests.filter(request => request.leaveStatus === status).length;
   }
+
+  updateRequestNumbers() {
+    this.pendingRequests = this.getRequestCount('Pending');
+    this.approvedRequests = this.getRequestCount('Approved');
+    this.declinedRequests = this.getRequestCount('Declined');
+  }
+
+
 }
