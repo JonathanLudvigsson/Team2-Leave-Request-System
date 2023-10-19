@@ -73,7 +73,17 @@ export class AdminComponent {
 
   async SortRequests(status: string) {
     this.baseService.GetAll<Request>("request").subscribe(response => {
-      this.requestsToShow = response.filter(r => r.leaveStatus == status) as RequestDTO[]
+      this.requests = response.filter(r => r.leaveStatus == status)
+      this.requestsToShow = this.requests as RequestDTO[]
+      this.requestsToShow.forEach(request => {
+        this.baseService.Get<User>("users/", request.userID).subscribe(user => {
+          request.userName = user.name
+        })
+        this.baseService.Get<LeaveType>("leavetypes/", request.leaveTypeID).subscribe(leavetype => {
+          request.leaveTypeName = leavetype.name
+        })
+      })
+
     })
   }
 
