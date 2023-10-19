@@ -71,7 +71,7 @@ export class AdminComponent {
     })
   }
 
-  async SortRequests(status: string) {
+  SortRequests(status: string) {
     this.baseService.GetAll<Request>("request").subscribe(response => {
       this.requests = response.filter(r => r.leaveStatus == status)
       this.requestsToShow = this.requests as RequestDTO[]
