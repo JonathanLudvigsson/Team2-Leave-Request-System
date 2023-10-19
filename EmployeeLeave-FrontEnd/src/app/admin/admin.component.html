@@ -9,26 +9,48 @@
       <button (click)="SortRequests('Declined')">Declined</button>
     </div>
   </div>
-  <div *ngFor="let request of requestsToShow">
-    {{request.requestID}}
-    {{request.leaveStatus}}
-    {{request.userID}}
-    {{request.leaveTypeID}}
-    {{request.startDate}}
-    {{request.endDate}}
-    <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
-    <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+
+  <div class="request-list">
+    <div *ngFor="let request of requestsToShow" class="request-item">
+      <div class="request-details">
+        {{request.requestID}}
+        {{request.leaveStatus}}
+        {{request.userID}}
+        {{request.leaveTypeID}}
+        {{request.startDate}}
+        {{request.endDate}}
+      </div>
+      <div class="request-actions">
+        <button (click)="ApproveOrDenyRequest(request, true)" class="btn-approve">Approve</button>
+        <button (click)="ApproveOrDenyRequest(request, false)" class="btn-deny">Deny</button>
+      </div>
+    </div>
   </div>
 
-  <hr />
 
-  <div *ngFor="let user of users">
-    {{user.id}}
-    {{user.name}}
-    {{user.address}}
-    {{user.email}}
-    {{user.password}}
-    {{user.isAdmin}}
+  <hr />
+  <div class="container">
+    <div class="show-users">
+      <h1>All users</h1>
+      <table *ngFor="let user of users" class="user-table">
+        <thead>
+          <tr>
+            <td>User id</td>
+            <td>Name</td>
+            <td>Address</td>
+            <td>Email</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.address}}</td>
+            <td>{{user.email}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <hr />
@@ -46,8 +68,8 @@
       <label for="leaveTypeID">Maximum leave days</label>
       <input type="text" id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newLeave.maximumDays" required>
     </div>
-    <button (click)="CreateLeaveType()" class="btn btn-primary">Create Leave Type</button>
-    <button (click)="EditLeaveType(newLeave.leaveTypeID)" class="btn btn-info">Edit Leave Type</button>
+    <button (click)="CreateLeaveType()">Create Leave Type</button>
+    <button (click)="EditLeaveType(newLeave.leaveTypeID)">Edit Leave Type</button>
     <button (click)="DeleteLeaveType(newLeave.leaveTypeID)">Delete Leave Type</button>
   </form>
 </div>
