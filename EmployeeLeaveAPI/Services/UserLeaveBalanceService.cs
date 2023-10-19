@@ -28,7 +28,7 @@ public class UserLeaveBalanceService : IUserLeaveBalanceService
                 .Select(g => new
                 {
                     LeaveTypeId = g.Key,
-                    DaysTaken = g.Sum(x => (x.EndDate - x.StartDate).Days + 1)
+                    DaysTaken = g.Sum(x => (x.TotalDays))
                 }).ToList();
 
             var leaveTypes = await _leaveTypeRepository.GetAll();
