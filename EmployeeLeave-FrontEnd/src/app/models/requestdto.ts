@@ -7,4 +7,5 @@ export interface RequestDTO {
   leaveTypeName: string
   startDate: string
   endDate: string
+  daysLeft: string
 }

@@ -6,6 +6,7 @@ import {User} from '../models/user';
 import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
 import { RequestDTO } from '../models/requestdto';
+import { UserLeaveBalance } from '../models/userleavebalance';
 
 @Component({
   selector: 'app-admin',
@@ -65,6 +66,9 @@ export class AdminComponent {
         })
         this.baseService.Get<LeaveType>("leavetypes/", request.leaveTypeID).subscribe(leavetype => {
           request.leaveTypeName = leavetype.name
+        })
+        this.baseService.Get<UserLeaveBalance[]>("user-leave-balances/user/", request.userID).subscribe(balance => {
+           request.daysLeft = balance.find(b => b.LeaveTypeId == request.leaveTypeID)!.DaysLeft
         })
       })
       
