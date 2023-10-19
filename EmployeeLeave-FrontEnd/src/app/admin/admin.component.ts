@@ -68,7 +68,12 @@ export class AdminComponent {
           request.leaveTypeName = leavetype.name
         })
         this.baseService.Get<UserLeaveBalance[]>("user-leave-balances/user/", request.userID).subscribe(balance => {
-           request.daysLeft = balance.find(b => b.LeaveTypeId == request.leaveTypeID)!.DaysLeft
+          const foundBalance = balance.find(b => b.leaveTypeId == request.leaveTypeID);
+          if (foundBalance) {
+            request.daysLeft = foundBalance.daysLeft;
+          } else {
+            console.error("No balance found for user " + request.userID + " and leave type " + request.leaveTypeID);
+          }
         })
       })
       
