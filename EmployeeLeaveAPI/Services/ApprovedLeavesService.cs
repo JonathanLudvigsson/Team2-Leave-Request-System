@@ -20,6 +20,7 @@ public class ApprovedLeavesService : IApprovedLeavesService
     {
         try
         {
+            int totalDays = CalculateActualLeaveDays(startDate, endDate);
             var approvedLeave = new ApprovedLeave
             {
                 StartDate = startDate,
@@ -27,6 +28,7 @@ public class ApprovedLeavesService : IApprovedLeavesService
                 UserId = userId,
                 LeaveTypeId = leaveTypeId,
                 RequestId = requestId,
+                TotalDays = totalDays,
                 ApprovedDate = DateTime.Now
             };
             await _approvedLeavesRepository.Create(approvedLeave);
@@ -36,5 +38,20 @@ public class ApprovedLeavesService : IApprovedLeavesService
             _logger.LogError(e.Message);
             throw new Exception("Error creating approved leave: " + e.Message);
         }
+    }
+    
+    public int CalculateActualLeaveDays(DateTime startDate, DateTime endDate)
+    {
+        var totalDays = (endDate - startDate).Days;
+        for (var i = 0; i < totalDays; i++)
+        {
+            var date = startDate.AddDays(i);
+            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                totalDays--;
+            }
+        }
+
+        return totalDays;
     }
 }

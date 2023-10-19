@@ -13,5 +13,6 @@ public class ApprovedLeave
     [JsonIgnore] public User User { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public int TotalDays { get; set; }
     public DateTime ApprovedDate { get; set; }
 }
