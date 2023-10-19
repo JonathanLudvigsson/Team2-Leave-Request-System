@@ -18,7 +18,7 @@ namespace EmployeeLeaveAPI
             // Add services to the container.
             builder.Services.AddAuthorization();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddScoped(typeof(IUserLeaveBalanceRepository), typeof(UserLeaveBalanceRepository));
+            builder.Services.AddScoped<IUserLeaveBalanceService, UserLeaveBalanceService>();
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddScoped(typeof(IApprovedLeavesService), typeof(ApprovedLeavesService));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
