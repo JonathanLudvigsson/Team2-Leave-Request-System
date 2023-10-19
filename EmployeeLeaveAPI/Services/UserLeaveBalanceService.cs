@@ -1,3 +1,4 @@
+using EmployeeLeaveAPI.DTOs;
 using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
 
@@ -5,26 +6,49 @@ namespace EmployeeLeaveAPI.Services;
 
 public class UserLeaveBalanceService : IUserLeaveBalanceService
 {
-    private readonly IUserLeaveBalanceRepository _userLeaveBalanceRepository;
+    private readonly IApprovedLeavesRepository _approvedLeaveRepository;
     private readonly IRepository<LeaveType> _leaveTypeRepository;
     private readonly ILogger<UserLeaveBalanceService> _logger;
-
-    public UserLeaveBalanceService(IUserLeaveBalanceRepository userLeaveBalanceRepository,
-        IRepository<LeaveType> leaveTypeRepository, ILogger<UserLeaveBalanceService> logger)
+    
+    public UserLeaveBalanceService(IApprovedLeavesRepository approvedLeaveRepository, IRepository<LeaveType> leaveTypeRepository, ILogger<UserLeaveBalanceService> logger)
     {
-        _userLeaveBalanceRepository = userLeaveBalanceRepository;
+        _approvedLeaveRepository = approvedLeaveRepository;
         _leaveTypeRepository = leaveTypeRepository;
         _logger = logger;
     }
 
-    public async Task<int> GetUserDaysLeftByLeavetype(int userId, int leaveTypeId)
+    public async Task<List<UserLeaveBalanceDTO>> GetUserDaysLeftAsync(int userId)
     {
         try
         {
-            var leaveType = await _leaveTypeRepository.Get(leaveTypeId);
-            var userLeaveUsedDays =
-                await _userLeaveBalanceRepository.GetUserLeaveUsedDaysByLeaveType(userId, leaveTypeId);
-            return leaveType.MaximumDays - userLeaveUsedDays;
+            var approvedLeaves = await _approvedLeaveRepository.GetByUserId(userId);
+
+            var leaveGroups = approvedLeaves
+                .GroupBy(x=> x.LeaveTypeId)
+                .Select(g => new
+                {
+                    LeaveTypeId = g.Key,
+                    DaysTaken = g.Sum(x => (x.EndDate - x.StartDate).Days + 1)
+                }).ToList();
+
+            var leaveTypes = await _leaveTypeRepository.GetAll();
+            
+            var result = new List<UserLeaveBalanceDTO>();
+            
+            foreach (var leaveType in leaveTypes)
+            {
+                var daysTaken = leaveGroups.FirstOrDefault(x => x.LeaveTypeId == leaveType.LeaveTypeID)?.DaysTaken ?? 0;
+                var daysLeft = leaveType.MaximumDays - daysTaken;
+                
+                result.Add(new UserLeaveBalanceDTO
+                {
+                    LeaveTypeId = leaveType.LeaveTypeID,
+                    DaysLeft = daysLeft,
+                    LeaveTypeName = leaveType.Name
+                });
+            }
+            
+            return result;
         }
         catch (Exception e)
         {

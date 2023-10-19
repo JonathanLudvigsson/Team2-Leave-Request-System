@@ -43,7 +43,7 @@ namespace EmployeeLeaveAPI.Endpoints
             .Produces(404)
             .Produces(500);
 
-            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> repository, IUserLeaveBalanceRepository balanceRepo, [FromBody] CreateLeaveTypeDTO newLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
+            app.MapPost("/api/leavetypes", async (IRepository<LeaveType> repository, [FromBody] CreateLeaveTypeDTO newLeaveDTO, ILogger logger, [FromServices] IMapper mapper) =>
             {
                 try
                 {

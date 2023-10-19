@@ -1,6 +1,8 @@
+using EmployeeLeaveAPI.DTOs;
+
 namespace EmployeeLeaveAPI.Interfaces;
 
 public interface IUserLeaveBalanceService
 {
-    Task<int> GetUserDaysLeftByLeavetype(int userId, int leaveTypeId);
+    Task<List<UserLeaveBalanceDTO>> GetUserDaysLeftAsync(int userId);
 }

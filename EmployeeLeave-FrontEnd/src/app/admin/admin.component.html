@@ -10,6 +10,7 @@
     </div>
   </div>
 
+
   <div class="request-list">
     <div *ngFor="let request of requestsToShow" class="request-item">
       <div class="request-details">
@@ -26,6 +27,20 @@
       </div>
     </div>
   </div>
+
+  <div *ngFor="let request of requestsToShow">
+    {{request.userName}}
+    {{request.leaveTypeName}}
+    {{request.leaveStatus}}
+    {{request.startDate.split("T")[0]}}
+    {{request.endDate.split("T")[0]}}
+    <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
+    <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+  </div>
+</div>
+
+  <hr />
+
 
 
   <hr />
@@ -72,4 +87,4 @@
     <button (click)="EditLeaveType(newLeave.leaveTypeID)">Edit Leave Type</button>
     <button (click)="DeleteLeaveType(newLeave.leaveTypeID)">Delete Leave Type</button>
   </form>
-</div>
+

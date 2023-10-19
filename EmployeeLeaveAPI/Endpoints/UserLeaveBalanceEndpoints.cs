@@ -1,3 +1,4 @@
+using EmployeeLeaveAPI.DTOs;
 using EmployeeLeaveAPI.Interfaces;
 
 namespace EmployeeLeaveAPI.Endpoints;
@@ -6,13 +7,25 @@ public class UserLeaveBalanceEndpoints
 {
     public static void RegisterEndpoints(WebApplication app)
     {
-        app.MapGet("/api/user-leave-balances/user/{userId:int}/leave-type/{leaveTypeId:int}",
-                async (IUserLeaveBalanceService userLeaveBalanceService, int userId, int leaveTypeId) =>
+        app.MapGet("/api/user-leave-balances/user/{userId:int}",
+                async (IUserLeaveBalanceService userLeaveBalanceService, int userId) =>
                 {
-                    var userLeaveBalance =
-                        await userLeaveBalanceService.GetUserDaysLeftByLeavetype(userId, leaveTypeId);
-                    return Results.Ok(userLeaveBalance);
+                    try
+                    {
+                        var userLeaveBalance =
+                            await userLeaveBalanceService.GetUserDaysLeftAsync(userId);
+                        if (userLeaveBalance == null)
+                        {
+                            return Results.NotFound();
+                        }
+
+                        return Results.Ok(userLeaveBalance);
+                    }
+                    catch (Exception e)
+                    {
+                        return Results.BadRequest(e.Message);
+                    }
                 })
-            .Produces<int>(200);
+            .Produces<List<UserLeaveBalanceDTO>>();
     }
 }

@@ -44,4 +44,17 @@ public class ApprovedLeavesRepository : IApprovedLeavesRepository
             return null;
         }
     }
+    
+    public async Task<IEnumerable<ApprovedLeave>> GetByUserId(int userId)
+    {
+        try
+        {
+            return await _context.ApprovedLeaves.Where(x => x.UserId == userId).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting approved leaves by user id");
+            return null;
+        }
+    }
 }
