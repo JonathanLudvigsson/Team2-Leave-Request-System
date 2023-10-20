@@ -143,5 +143,18 @@ export class UserComponent {
     this.declinedRequests = this.getRequestCount('Declined');
   }
 
+  deleteRequest(id: any) {
+    if (id) {
+      this.baseService.Delete<Request>('request/delete/', id).subscribe(
+        (response) => {
+          this.ngOnInit()
+           
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
+    }
+  }
 
 }
