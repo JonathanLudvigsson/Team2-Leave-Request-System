@@ -129,6 +129,7 @@ export class UserComponent {
     request.leaveStatus = 'Pending';
     this.baseService.Create<Request>("request/post/", request).subscribe((response) => {
       this.request = response;
+      this.ngOnInit();
     });
   }
 
@@ -147,8 +148,7 @@ export class UserComponent {
     if (id) {
       this.baseService.Delete<Request>('request/delete/', id).subscribe(
         (response) => {
-          this.ngOnInit()
-           
+          this.ngOnInit();          
         },
         (error) => {
           console.error('Error:', error);
