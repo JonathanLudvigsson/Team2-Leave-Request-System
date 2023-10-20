@@ -57,4 +57,17 @@ public class ApprovedLeavesRepository : IApprovedLeavesRepository
             return null;
         }
     }
+    
+    public async Task<ApprovedLeave> GetByRequestId(int requestId)
+    {
+        try
+        {
+            return await _context.ApprovedLeaves.FirstOrDefaultAsync(x => x.RequestId == requestId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting approved leaves by request id");
+            return null;
+        }
+    }
 }

@@ -7,6 +7,7 @@ import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
 import {RequestDTO} from '../models/requestdto';
 import {UserLeaveBalance} from '../models/userleavebalance';
+import { ApprovedLeave } from '../models/approvedleave';
 
 @Component({
   selector: 'app-admin',
@@ -121,7 +122,9 @@ export class AdminComponent {
 
   DeleteRequest(id: string) {
     this.baseService.Delete<Request>("request/delete/", id).subscribe(response => {
+      this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
 
+      })
     })
   }
 
