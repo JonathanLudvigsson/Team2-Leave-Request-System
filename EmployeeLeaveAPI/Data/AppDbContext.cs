@@ -23,12 +23,6 @@ namespace EmployeeLeaveAPI.Data
                 .IsUnique();
 
             modelBuilder.Entity<ApprovedLeave>()
-                .HasOne(p => p.Request)
-                .WithMany() // Or with navigation property if it exists.
-                .HasForeignKey(p => p.RequestId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ApprovedLeave>()
                 .HasOne(p => p.User)
                 .WithMany() // Or with navigation property if it exists.
                 .HasForeignKey(p => p.UserId)
