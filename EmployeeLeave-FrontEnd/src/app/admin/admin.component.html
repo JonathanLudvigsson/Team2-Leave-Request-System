@@ -12,12 +12,13 @@
   <div *ngFor="let request of requestsToShow">
     {{request.userName}}
     {{request.leaveTypeName}}
-    {{request.leaveStatus}}
     {{request.startDate.split("T")[0]}}
     {{request.endDate.split("T")[0]}}
     {{request.daysLeft}}
-    <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
-    <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+    {{request.leaveStatus}}
+    <button *ngIf="request.leaveStatus != 'Approved' && request.leaveStatus != '1'" (click)="ApproveOrDenyRequest(request, true)">Approve</button>
+    <button *ngIf="request.leaveStatus != 'Declined' && request.leaveStatus != '2'" (click)="ApproveOrDenyRequest(request, false)">Deny</button>
+    <button *ngIf="request.leaveStatus != 'Pending' && request.leaveStatus != '0'" (click)="DeleteRequest(request.requestID)">Delete</button>
   </div>
 </div>
 
