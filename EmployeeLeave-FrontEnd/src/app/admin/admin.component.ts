@@ -5,8 +5,8 @@ import {LeaveType} from '../models/leavetype';
 import {User} from '../models/user';
 import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
-import { RequestDTO } from '../models/requestdto';
-import { UserLeaveBalance } from '../models/userleavebalance';
+import {RequestDTO} from '../models/requestdto';
+import {UserLeaveBalance} from '../models/userleavebalance';
 
 @Component({
   selector: 'app-admin',
@@ -68,10 +68,16 @@ export class AdminComponent {
           request.leaveTypeName = leavetype.name
         })
         this.baseService.Get<UserLeaveBalance[]>("user-leave-balances/user/", request.userID).subscribe(balance => {
-           request.daysLeft = balance.find(b => b.LeaveTypeId == request.leaveTypeID)!.DaysLeft
+          const foundBalance = balance.find(b => b.leaveTypeId == request.leaveTypeID);
+
+          if (foundBalance) {
+            request.daysLeft = foundBalance.daysLeft;
+          } else {
+            console.error("No balance found for user " + request.userID + " and leave type " + request.leaveTypeID);
+          }
         })
       })
-      
+
     })
   }
 

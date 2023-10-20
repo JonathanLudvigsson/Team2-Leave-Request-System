@@ -65,17 +65,26 @@ namespace EmployeeLeaveAPI.Endpoints
                 .Produces(500);
 
             app.MapPost("/api/request/post", async (IRepository<Request> repository, ILogger logger, IMapper mapper,
-                    [FromBody] CreateRequestDTO requestDto, IRequestService requestService) =>
+                    [FromBody] CreateRequestDTO requestDto, IRequestService requestService,
+                    IUserLeaveBalanceService userLeaveBalanceService) =>
                 {
                     try
                     {
-                        var checkDates = requestService.CheckValidDates(requestDto.StartDate, requestDto.EndDate).Result;
-                        
+                        var checkDates = requestService.CheckValidDates(requestDto.StartDate, requestDto.EndDate)
+                            .Result;
+                        bool hasEnoughDays = userLeaveBalanceService.HasEnoughDaysLeftAsync(requestDto.UserID,
+                            requestDto.LeaveTypeID, requestDto.StartDate, requestDto.EndDate).Result;
+
+                        if (!hasEnoughDays)
+                        {
+                            return Results.BadRequest("Not enough days left");
+                        }
+
                         if (!checkDates.isOk)
                         {
                             return Results.BadRequest(checkDates.message);
                         }
-                        
+
                         var request = mapper.Map<Request>(requestDto);
                         var createdRequest = await repository.Create(request);
                         return createdRequest != null
@@ -114,7 +123,8 @@ namespace EmployeeLeaveAPI.Endpoints
 
             app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger,
                     IMapper mapper, int id, Request request,
-                    IApprovedLeavesService approvedLeavesService, IRequestService requestService) =>
+                    IApprovedLeavesService approvedLeavesService, IRequestService requestService,
+                    IUserLeaveBalanceService userLeaveBalanceService) =>
                 {
                     try
                     {
@@ -122,9 +132,9 @@ namespace EmployeeLeaveAPI.Endpoints
                         {
                             return Results.BadRequest($"ID:{id} does not match any existing ID");
                         }
-                        
+
                         var checkDates = requestService.CheckValidDates(request.StartDate, request.EndDate).Result;
-                        
+
                         if (!checkDates.isOk)
                         {
                             return Results.BadRequest(checkDates.message);
@@ -139,6 +149,19 @@ namespace EmployeeLeaveAPI.Endpoints
                         mapper.Map(request, existingRequest);
 
                         var updatedRequest = await repository.Update(id, request);
+                        
+                        if (updatedRequest == null)
+                        {
+                            return Results.BadRequest("Error updating request");
+                        }
+                        
+                        bool hasEnoughDays = userLeaveBalanceService.HasEnoughDaysLeftAsync(request.UserID,
+                            updatedRequest.LeaveTypeID, updatedRequest.StartDate, request.EndDate).Result;
+                        
+                        if (!hasEnoughDays)
+                        {
+                            return Results.BadRequest("Not enough days left");
+                        }
 
                         if (updatedRequest is { LeaveStatus: Status.Approved })
                         {
