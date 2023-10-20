@@ -17,6 +17,10 @@ namespace EmployeeLeaveAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<ApprovedLeave>()
+                .HasIndex(p => p.RequestId)
+                .IsUnique();
 
             modelBuilder.Entity<ApprovedLeave>()
                 .HasOne(p => p.Request)
