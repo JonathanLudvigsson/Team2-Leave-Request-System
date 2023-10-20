@@ -1,5 +1,6 @@
 using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
+using EmployeeLeaveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeLeaveAPI.Endpoints;
@@ -85,5 +86,23 @@ public class ApprovedLeavesEndpoints
             .Produces(204)
             .Produces(500)
             .Produces<IEnumerable<ApprovedLeave>>();
+
+        app.MapDelete("/api/approved-leaves/request/{requestId:int}", async (IApprovedLeavesRepository appLeaveRepo, IRepository<ApprovedLeave> repo, ILogger logger, int requestId) =>
+        {
+            try
+            {
+                ApprovedLeave leaveToDelete = await appLeaveRepo.GetByRequestId(requestId);
+                var deletedLeave = await repo.Delete(leaveToDelete.ApprovedLeaveId);
+                return deletedLeave != null ? Results.Ok(deletedLeave) : Results.NotFound();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error deleting approved leave");
+                return Results.StatusCode(500);
+            }
+        })
+            .Produces<ApprovedLeave>(200)
+            .Produces(404)
+            .Produces(500);
     }
 }
