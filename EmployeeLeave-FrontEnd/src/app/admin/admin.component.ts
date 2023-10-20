@@ -5,8 +5,8 @@ import {LeaveType} from '../models/leavetype';
 import {User} from '../models/user';
 import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
-import { RequestDTO } from '../models/requestdto';
-import { UserLeaveBalance } from '../models/userleavebalance';
+import {RequestDTO} from '../models/requestdto';
+import {UserLeaveBalance} from '../models/userleavebalance';
 
 @Component({
   selector: 'app-admin',
@@ -76,7 +76,7 @@ export class AdminComponent {
           }
         })
       })
-      
+
     })
   }
 

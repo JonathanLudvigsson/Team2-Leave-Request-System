@@ -56,4 +56,41 @@ public class UserLeaveBalanceService : IUserLeaveBalanceService
             throw new Exception("Error getting leave balance + " + e.Message);
         }
     }
+    
+    public Task<bool> HasEnoughDaysLeftAsync(int userId, int leaveTypeId, DateTime startDate, DateTime endDate)
+    {
+        try
+        {
+            var approvedLeaves = _approvedLeaveRepository.GetByUserId(userId).Result;
+            var leaveGroups = approvedLeaves
+                .GroupBy(x=> x.LeaveTypeId)
+                .Select(g => new
+                {
+                    LeaveTypeId = g.Key,
+                    DaysTaken = g.Sum(x => (x.TotalDays))
+                }).ToList();
+
+            var leaveType = _leaveTypeRepository.Get(leaveTypeId).Result;
+            var daysTaken = leaveGroups.FirstOrDefault(x => x.LeaveTypeId == leaveType.LeaveTypeID)?.DaysTaken ?? 0;
+            var daysLeft = leaveType.MaximumDays - daysTaken;
+            int weekEndDays = 0;
+            
+            for (var date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    weekEndDays++;
+                }
+            }
+            
+            var daysRequested = (endDate - startDate).Days + 1 - weekEndDays;
+
+            return Task.FromResult(daysLeft >= daysRequested);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error checking if user has enough days left");
+            throw new Exception("Error checking if user has enough days left + " + e.Message);
+        }
+    }
 }
