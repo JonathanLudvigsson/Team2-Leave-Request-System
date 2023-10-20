@@ -1,7 +1,9 @@
 <div class="m-3">
   <h1>Welcome {{ this.userName}}</h1>
-  <p class="mt-2">You have {{ this.pendingRequests }} pending leave requests, {{ this.approvedRequests }} approved leave requests
-    and {{ this.declinedRequests }} declined leave requests.</p>
+  <p class="mt-2">
+    You have {{ this.pendingRequests }} pending leave requests, {{ this.approvedRequests }} approved leave requests
+    and {{ this.declinedRequests }} declined leave requests.
+  </p>
 
   <div class="my-5">
     <h2>Apply for leave</h2>
@@ -30,22 +32,24 @@
   <div class="request-container">
     <table class="table request-table">
       <thead>
-      <tr>
-        <th>Leave Type</th>
-        <th>Leave Status</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-      </tr>
+        <tr>
+          <th>Leave Type</th>
+          <th>Leave Status</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th></th> 
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of requests">
-        <td>{{ getLeaveTypeName(item.leaveTypeID) }}</td>
-
-        <td>{{ item.leaveStatus }}</td>
-        <td>{{ item.startDate.split('T')[0] }}</td>
-        <td>{{ item.endDate.split('T')[0] }}</td>
-      </tr>
+        <tr *ngFor="let item of requests">
+          <td>{{ getLeaveTypeName(item.leaveTypeID) }}</td>
+          <td>{{ item.leaveStatus }}</td>
+          <td>{{ item.startDate.split('T')[0] }}</td>
+          <td>{{ item.endDate.split('T')[0] }}</td>
+          <td>
+            <button (click)="deleteRequest(item.requestID)" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
-</div>
