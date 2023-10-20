@@ -5,7 +5,8 @@ import {BaseService} from 'src/app/services/baseservice';
 import {Request} from 'src/app/models/request';
 import {AuthService} from "../services/auth.service";
 import * as jwt_decode from 'jwt-decode';
-import {LeaveType} from "../models/leavetype";
+import { LeaveType } from "../models/leavetype";
+import { ApprovedLeave } from '../models/approvedleave';
 
 
 @Component({
@@ -148,6 +149,9 @@ export class UserComponent {
     if (id) {
       this.baseService.Delete<Request>('request/delete/', id).subscribe(
         (response) => {
+          this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
+
+          })
           this.ngOnInit();          
         },
         (error) => {
