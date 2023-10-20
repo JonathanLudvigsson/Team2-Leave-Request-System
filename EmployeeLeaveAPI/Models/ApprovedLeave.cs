@@ -6,7 +6,6 @@ public class ApprovedLeave
 {
     public int ApprovedLeaveId { get; set; }
     public int RequestId { get; set; }
-    [JsonIgnore] public Request Request { get; set; }
     public int LeaveTypeId { get; set; }
     [JsonIgnore] public LeaveType LeaveType { get; set; }
     public int UserId { get; set; }
