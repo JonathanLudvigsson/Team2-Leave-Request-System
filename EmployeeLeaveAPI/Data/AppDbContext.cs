@@ -13,6 +13,7 @@ namespace EmployeeLeaveAPI.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<ApprovedLeave> ApprovedLeaves { get; set; }
+        public DbSet<Email> Emails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -42,7 +42,7 @@ public class ApprovedLeavesService : IApprovedLeavesService
     
     public int CalculateActualLeaveDays(DateTime startDate, DateTime endDate)
     {
-        var totalDays = (endDate - startDate).Days;
+        var totalDays = (endDate - startDate).Days + 1;
         for (var i = 0; i < totalDays; i++)
         {
             var date = startDate.AddDays(i);

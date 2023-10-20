@@ -124,7 +124,7 @@ namespace EmployeeLeaveAPI.Endpoints
             app.MapPut("/api/request/update/{id}", async (IRepository<Request> repository, ILogger logger,
                     IMapper mapper, int id, Request request,
                     IApprovedLeavesService approvedLeavesService, IRequestService requestService,
-                    IUserLeaveBalanceService userLeaveBalanceService) =>
+                    IUserLeaveBalanceService userLeaveBalanceService, IEmailService emailService) =>
                 {
                     try
                     {
@@ -149,15 +149,15 @@ namespace EmployeeLeaveAPI.Endpoints
                         mapper.Map(request, existingRequest);
 
                         var updatedRequest = await repository.Update(id, request);
-                        
+
                         if (updatedRequest == null)
                         {
                             return Results.BadRequest("Error updating request");
                         }
-                        
+
                         bool hasEnoughDays = userLeaveBalanceService.HasEnoughDaysLeftAsync(request.UserID,
                             updatedRequest.LeaveTypeID, updatedRequest.StartDate, request.EndDate).Result;
-                        
+
                         if (!hasEnoughDays)
                         {
                             return Results.BadRequest("Not enough days left");
@@ -168,9 +168,18 @@ namespace EmployeeLeaveAPI.Endpoints
                             await approvedLeavesService.CreateApprovedLeave(updatedRequest.StartDate,
                                 updatedRequest.EndDate, updatedRequest.UserID, updatedRequest.LeaveTypeID,
                                 updatedRequest.RequestID);
+
+                            var emailResult = await emailService.CreateEmail(updatedRequest.UserID);
+                            var saveEmailResult = await emailService.SaveEmailToDbAsync(emailResult.email);
+                            var enqueueEmailResult = await emailService.EnqueueEmail(emailResult.email);
+
+                            if (!emailResult.isSuccess || !saveEmailResult.isSuccess || !enqueueEmailResult.isSuccess)
+                            {
+                                return Results.Ok("Request approved but email not sent, contact admin for more info");
+                            }
                         }
 
-                        return updatedRequest != null ? Results.Ok(updatedRequest) : Results.NoContent();
+                        return Results.Ok(updatedRequest);
                     }
                     catch (Exception e)
                     {

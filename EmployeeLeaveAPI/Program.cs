@@ -5,6 +5,7 @@ using EmployeeLeaveAPI.Interfaces;
 using EmployeeLeaveAPI.Models;
 using EmployeeLeaveAPI.Repositories;
 using EmployeeLeaveAPI.Services;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeLeaveAPI
@@ -22,12 +23,18 @@ namespace EmployeeLeaveAPI
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddScoped(typeof(IApprovedLeavesService), typeof(ApprovedLeavesService));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            builder.Services.AddScoped(typeof(IEmailService), typeof(EmailService));
             builder.Services.AddScoped(typeof(IRequestService), typeof(RequestService));
             builder.Services.AddScoped(typeof(IUserLeaveBalanceService), typeof(UserLeaveBalanceService));
             builder.Services.AddScoped(typeof(IRequestRepository), typeof(RequestRepository));
             builder.Services.AddScoped(typeof(IApprovedLeavesRepository), typeof(ApprovedLeavesRepository));
             builder.Services.AddScoped<ILogger, Logger<Program>>();
             builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddHangfire((provider, configuration) =>
+            {
+                configuration.UseSqlServerStorage(builder.Configuration.GetConnectionString("DbConnection"));
+            });
+            builder.Services.AddHangfireServer();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -58,6 +65,7 @@ namespace EmployeeLeaveAPI
             app.UseAuthorization();
 
             app.UseCors("default");
+            app.UseHangfireDashboard();
 
             Endpoints.UserEndpoints.RegisterEndpoints(app);
             Endpoints.LeaveTypeEndpoints.RegisterEndpoints(app);
