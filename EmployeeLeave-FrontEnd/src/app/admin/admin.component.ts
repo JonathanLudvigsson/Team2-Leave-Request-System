@@ -31,6 +31,8 @@ export class AdminComponent {
     maximumDays: ''
   }
 
+  currentSort: string = ''
+
   ngOnInit() {
     this.GetAllRequests()
     this.GetAllUsers()
@@ -58,6 +60,7 @@ export class AdminComponent {
 
   GetAllRequests() {
     this.baseService.GetAll<Request>("request").subscribe(response => {
+      this.currentSort = ''
       this.requests = response
       this.requestsToShow = this.requests as RequestDTO[]
       this.requestsToShow.forEach(request => {
@@ -91,6 +94,15 @@ export class AdminComponent {
         this.baseService.Get<LeaveType>("leavetypes/", request.leaveTypeID).subscribe(leavetype => {
           request.leaveTypeName = leavetype.name
         })
+        this.baseService.Get<UserLeaveBalance[]>("user-leave-balances/user/", request.userID).subscribe(balance => {
+          const foundBalance = balance.find(b => b.leaveTypeId == request.leaveTypeID);
+          if (foundBalance) {
+            request.daysLeft = foundBalance.daysLeft;
+          } else {
+            console.error("No balance found for user " + request.userID + " and leave type " + request.leaveTypeID);
+          }
+        })
+
       })
 
     })
@@ -104,6 +116,12 @@ export class AdminComponent {
     }
     this.baseService.Update<Request>("request/update/", request.requestID, request).subscribe(response => {
       console.log(response)
+    })
+  }
+
+  DeleteRequest(id: string) {
+    this.baseService.Delete<Request>("request/delete/", id).subscribe(response => {
+
     })
   }
 
