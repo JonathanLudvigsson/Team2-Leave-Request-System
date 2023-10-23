@@ -6,7 +6,22 @@
     and <span class="request-count declined-requests">{{ declinedRequests }}</span> declined leave requests.
   </p>
 </div>
+
 <hr class="styled-hr">
+<div *ngIf="userLeaveBalanceData && userLeaveBalanceData.length > 0">
+  <div class="days-left-position">
+    <div class="count-days-container">
+      <p class="leave-balance-title">Leave Balance:</p>
+      <ul class="leave-balance-list">
+        <li *ngFor="let userLeaveBalance of userLeaveBalanceData" class="leave-balance-item">
+          <p class="leave-type">{{ userLeaveBalance.leaveTypeName }}:</p>
+          <p class="days-left">{{ userLeaveBalance.daysLeft }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<hr />
 
 <button (click)="toggleForm()" class="btn btn-primary" style="margin:2em;">Apply for leave</button>
 

@@ -119,3 +119,45 @@ button[type="submit"] {
 .request-container {
   margin-right: 2em;
 }
+
+/* Total balance style*/
+.days-left-position {
+  text-align: center;
+  padding: 10px;
+  display:flex;
+  justify-content:space-around;
+}
+
+.count-days-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  width:50%;
+}
+
+.leave-balance-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.leave-balance-list {
+  list-style: none;
+  padding: 0;
+}
+
+.leave-balance-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+}
+
+.leave-type {
+  font-weight: bold;
+}
+
+.days-left {
+  font-weight: bold;
+}
