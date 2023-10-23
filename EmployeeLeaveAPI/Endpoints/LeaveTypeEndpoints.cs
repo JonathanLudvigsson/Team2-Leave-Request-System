@@ -114,7 +114,49 @@ namespace EmployeeLeaveAPI.Endpoints
                         int totalDays = 0;
                         foreach (var appLeave in await appRepo.GetByLeaveType(type.LeaveTypeID))
                         {
-                            totalDays += leavesService.CalculateActualLeaveDays(appLeave.StartDate, appLeave.EndDate);
+                            totalDays += await leavesService.CalculateActualLeaveDays(appLeave.StartDate, appLeave.EndDate);
+                        }
+                        type.TotalDaysUsed = totalDays;
+                    }
+
+                    return typesWithDays.Any() ? Results.Ok(typesWithDays) : Results.NoContent();
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e, "Error getting leavetypes");
+                    return Results.StatusCode(500);
+                }
+            });
+
+            app.MapGet("/api/leavetypes/daysused/timerange", async (IRepository<LeaveType> repository, IApprovedLeavesRepository appRepo, IApprovedLeavesService leavesService, ILogger logger, IMapper mapper, [FromQuery] DateTime from, [FromQuery] DateTime to) =>
+            {
+                try
+                {
+                    var types = await repository.GetAll();
+
+                    List<LeaveTypeDaysUsedDTO> typesWithDays = new List<LeaveTypeDaysUsedDTO>();
+
+                    foreach (var type in types)
+                    {
+                        typesWithDays.Add(mapper.Map<LeaveTypeDaysUsedDTO>(type));
+                    }
+
+                    foreach (var type in typesWithDays)
+                    {
+                        int totalDays = 0;
+                        var appLeaves = await appRepo.GetByLeaveType(type.LeaveTypeID);
+                        
+                        foreach (var appLeave in appLeaves.Where(a => a.StartDate <= to && a.EndDate >= from))
+                        {
+                            if (appLeave.StartDate < from)
+                            {
+                                appLeave.StartDate = from;
+                            }
+                            if (appLeave.EndDate > to)
+                            {
+                                appLeave.EndDate = to;
+                            }
+                            totalDays += await leavesService.CalculateActualLeaveDays(appLeave.StartDate, appLeave.EndDate);
                         }
                         type.TotalDaysUsed = totalDays;
                     }
