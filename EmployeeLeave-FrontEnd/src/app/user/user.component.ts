@@ -151,6 +151,7 @@ export class UserComponent {
     if (id) {
       this.baseService.Delete<Request>('request/delete/', id).subscribe(
         (response) => {
+         
           this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
 
           })
