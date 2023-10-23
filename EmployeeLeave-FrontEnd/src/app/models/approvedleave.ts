@@ -5,5 +5,6 @@ export interface ApprovedLeave {
   userId: string
   startDate: string
   endDate: string
+  totalDays: string
   approvedDate: string
 }

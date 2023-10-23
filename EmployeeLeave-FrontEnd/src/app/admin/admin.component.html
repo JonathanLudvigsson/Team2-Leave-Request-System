@@ -33,6 +33,13 @@
     {{user.isAdmin}}
   </div>
   <hr />
+
+<div *ngFor="let leave of leaveTypesTotalDays">
+  {{leave.leaveTypeID}}
+  {{leave.name}}
+  {{leave.maximumDays}}
+  {{leave.totalDaysUsed}}
+</div>
   <form #requestForm="ngForm">
     <div class="form-group">
       <label for="leaveID">Leave ID</label>

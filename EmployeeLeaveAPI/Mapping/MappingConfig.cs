@@ -11,5 +11,6 @@ public class MappingConfig : Profile
         CreateMap<CreateUserDTO, User>();
         CreateMap<CreateRequestDTO, Request>();
         CreateMap<CreateLeaveTypeDTO, LeaveType>();
+        CreateMap<LeaveTypeDaysUsedDTO, LeaveType>().ReverseMap();
     }
 }
