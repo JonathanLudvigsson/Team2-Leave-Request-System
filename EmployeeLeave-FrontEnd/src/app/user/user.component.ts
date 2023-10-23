@@ -1,12 +1,15 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {DecodedToken} from '../models/decodedtoken';
-import {BaseService} from 'src/app/services/baseservice';
-import {Request} from 'src/app/models/request';
-import {AuthService} from "../services/auth.service";
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { DecodedToken } from '../models/decodedtoken';
+import { BaseService } from 'src/app/services/baseservice';
+import { Request } from 'src/app/models/request';
+import { AuthService } from "../services/auth.service";
 import * as jwt_decode from 'jwt-decode';
 import { LeaveType } from "../models/leavetype";
 import { ApprovedLeave } from '../models/approvedleave';
+import { UserLeaveBalance } from "../models/userleavebalance";
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({
@@ -48,7 +51,7 @@ export class UserComponent {
   }
   requests?: any[];
   public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
-  showForm:boolean = false;
+  showForm: boolean = false;
   baseUrl: string = 'https://localhost:7268/api/'
   public approvedRequests: number = 0;
   public pendingRequests: number = 0;
@@ -56,11 +59,13 @@ export class UserComponent {
   public userName: string = '';
   public userId: string = '';
   public leaveTypes: LeaveType[] = [];
+  userLeaveBalanceData: any;
 
 
-  
 
-  constructor(private router: Router, private baseService: BaseService, private authService: AuthService) {
+
+
+  constructor(private router: Router, private baseService: BaseService, private authService: AuthService, private http: HttpClient) {
 
   }
 
@@ -71,6 +76,7 @@ export class UserComponent {
     this.updateRequestNumbers();
     this.setLoggedInUser();
     this.fetchLeaveTypes();
+    this.getUserLeaveBalance();
   }
 
   fetchLeaveTypes() {
@@ -101,10 +107,10 @@ export class UserComponent {
       }
     });
     this.authService.isAdmin$.subscribe(response => {
-        if (response) {
-          this.router.navigate(['/']);
-        }
+      if (response) {
+        this.router.navigate(['/']);
       }
+    }
     );
   }
 
@@ -151,11 +157,11 @@ export class UserComponent {
     if (id) {
       this.baseService.Delete<Request>('request/delete/', id).subscribe(
         (response) => {
-         
+
           this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
 
           })
-          this.ngOnInit();          
+          this.ngOnInit();
         },
         (error) => {
           console.error('Error:', error);
@@ -167,5 +173,17 @@ export class UserComponent {
   toggleForm() {
     this.showForm = !this.showForm;
   }
+
+  getUserLeaveBalance() {
+    const id = this.myToken.UserId;
+    const url = `https://localhost:7268/api/user-leave-balances/user/${id}`;
+    this.http.get(url).subscribe((response) => {
+      this.userLeaveBalanceData = response;
+      console.log(this.userLeaveBalanceData)
+    }, (error) => {
+      console.error('Error:', error);
+    });
+  }
+
 
 }
