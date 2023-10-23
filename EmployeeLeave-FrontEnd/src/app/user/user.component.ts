@@ -46,10 +46,9 @@ export class UserComponent {
     startDate: "",
     endDate: ""
   }
-
   requests?: any[];
   public statusLabels: string[] = ['Pending', 'Approved', 'Declined'];
-  showForm = false;
+  showForm:boolean = false;
   baseUrl: string = 'https://localhost:7268/api/'
   public approvedRequests: number = 0;
   public pendingRequests: number = 0;
@@ -57,6 +56,9 @@ export class UserComponent {
   public userName: string = '';
   public userId: string = '';
   public leaveTypes: LeaveType[] = [];
+
+
+  
 
   constructor(private router: Router, private baseService: BaseService, private authService: AuthService) {
 
@@ -159,6 +161,10 @@ export class UserComponent {
         }
       );
     }
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
   }
 
 }

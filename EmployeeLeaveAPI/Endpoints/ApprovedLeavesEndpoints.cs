@@ -87,12 +87,14 @@ public class ApprovedLeavesEndpoints
             .Produces(500)
             .Produces<IEnumerable<ApprovedLeave>>();
 
+
+        // ger fel
         app.MapDelete("/api/approved-leaves/request/{requestId:int}", async (IApprovedLeavesRepository appLeaveRepo, IRepository<ApprovedLeave> repo, ILogger logger, int requestId) =>
         {
             try
             {
                 ApprovedLeave leaveToDelete = await appLeaveRepo.GetByRequestId(requestId);
-                var deletedLeave = await repo.Delete(leaveToDelete.ApprovedLeaveId);
+                var deletedLeave = await repo.Delete(leaveToDelete.ApprovedLeaveId); // här
                 return deletedLeave != null ? Results.Ok(deletedLeave) : Results.NotFound();
             }
             catch (Exception e)
