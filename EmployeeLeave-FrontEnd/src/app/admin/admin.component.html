@@ -1,4 +1,12 @@
 <div class="container">
+  <div class="dropdown">
+    <button class="dropbtn">Sort requests</button>
+    <div class="dropdown-content">
+      <button (click)="SortRequests('Pending')">Pending</button>
+      <button (click)="SortRequests('Approved')">Approved</button>
+      <button (click)="SortRequests('Declined')">Declined</button>
+    </div>
+  </div>
   <h1>Leave Requests</h1>
   <div class="request-list">
     <div *ngFor="let request of requestsToShow" class="request-item">
@@ -21,7 +29,10 @@
   </div>
 </div>
 
-<hr />
+
+
+
+<hr />  
 
 <div class="container">
   <div class="show-users">
@@ -51,8 +62,8 @@
 <hr />
 
 <div class="pending-position">
-  <h1>Add or update leave-type</h1>
   <div class="pending-list">
+    <h1>Add or update leave-type</h1>
     <form #requestForm="ngForm" class="pending-content">
       <div class="form-group">
         <label for="leaveID">Leave ID</label>
