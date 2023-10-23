@@ -128,11 +128,9 @@ export class AdminComponent {
 
   DeleteRequest(id: string) {
     this.baseService.Delete<Request>("request/delete/", id).subscribe(response => {
-      if (this.baseService.Get<ApprovedLeave>("approved-leaves/request/", response.requestID)) {
         this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
 
         })
-      }
 
     })
   }
