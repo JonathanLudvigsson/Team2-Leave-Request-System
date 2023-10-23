@@ -9,6 +9,7 @@ import {RequestDTO} from '../models/requestdto';
 import {UserLeaveBalance} from '../models/userleavebalance';
 import { ApprovedLeave } from '../models/approvedleave';
 import { LeaveTypeDTO } from '../models/leavetypedto';
+import { LeaveTypeService } from '../services/leavetypeservice';
 
 @Component({
   selector: 'app-admin',
@@ -17,7 +18,7 @@ import { LeaveTypeDTO } from '../models/leavetypedto';
 })
 export class AdminComponent {
 
-  constructor(private baseService: BaseService, private authService: AuthService, private router: Router) {
+  constructor(private baseService: BaseService, private authService: AuthService, private leaveService: LeaveTypeService, private router: Router) {
 
   }
 
@@ -38,6 +39,9 @@ export class AdminComponent {
   leaveTypes: LeaveType[] = []
 
   leaveTypesTotalDays: LeaveTypeDTO[] = []
+
+  startDate: string = ''
+  endDate: string = ''
 
   ngOnInit() {
     this.GetAllRequests()
@@ -159,6 +163,31 @@ export class AdminComponent {
 
   DeleteLeaveType(id: string) {
     this.baseService.Delete<LeaveType>("leavetypes/", id).subscribe(response => {
+    })
+  }
+
+  ExportLeaveReport(from: string, to: string) {
+    let structuredString = '-LEAVE TYPE REPORT-'
+    structuredString += "\n" + from.split("T")[0] + " - " + to.split("T")[0]
+    let timeRangeList
+
+    var fromDate = new Date(from)
+    var toDate = new Date(to)
+
+    this.leaveService.GetFromTimeRange<LeaveTypeDTO>(fromDate, toDate).subscribe(response => {
+      timeRangeList = response
+
+      timeRangeList.forEach(type => {
+        structuredString += "\n\nID: " + type.leaveTypeID + "\nName: " + type.name + "\nMaximum days off per employee: " + type.maximumDays + "\nTotal days taken off globally: " + type.totalDaysUsed
+      })
+
+      let blob = new Blob([structuredString], { type: "text/plain;charset=utf-8" })
+      let url = window.URL.createObjectURL(blob)
+      let a = document.createElement("a")
+      a.href = url
+      a.download = "report"
+      a.click()
+      window.URL.revokeObjectURL(url)
     })
   }
 

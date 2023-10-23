@@ -20,7 +20,7 @@ public class ApprovedLeavesService : IApprovedLeavesService
     {
         try
         {
-            int totalDays = CalculateActualLeaveDays(startDate, endDate);
+            int totalDays = await CalculateActualLeaveDays(startDate, endDate);
             var approvedLeave = new ApprovedLeave
             {
                 StartDate = startDate,
@@ -40,7 +40,7 @@ public class ApprovedLeavesService : IApprovedLeavesService
         }
     }
     
-    public int CalculateActualLeaveDays(DateTime startDate, DateTime endDate)
+    public async Task<int> CalculateActualLeaveDays(DateTime startDate, DateTime endDate)
     {
         var totalDays = (endDate - startDate).Days + 1;
         for (var i = 0; i < totalDays; i++)
