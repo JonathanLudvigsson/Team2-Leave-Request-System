@@ -1,13 +1,13 @@
 <div class="container">
+  <h1>Incoming Requests To Review</h1>
   <div class="dropdown">
-    <button class="dropbtn">Sort requests</button>
-    <div class="dropdown-content">
+    <button class="dropbtn" style="margin-bottom:15px; height:2.5em; align-items:center; ">Sort requests</button>
+    <div class="dropdown-content" style="border: 1px solid;">
       <button (click)="SortRequests('Pending')">Pending</button>
       <button (click)="SortRequests('Approved')">Approved</button>
       <button (click)="SortRequests('Declined')">Declined</button>
     </div>
   </div>
-  <h1>Leave Requests</h1>
   <div class="request-list">
     <div *ngFor="let request of requestsToShow" class="request-item">
       <div class="request-details">
