@@ -94,7 +94,13 @@ public class ApprovedLeavesEndpoints
             try
             {
                 ApprovedLeave leaveToDelete = await appLeaveRepo.GetByRequestId(requestId);
-                var deletedLeave = await repo.Delete(leaveToDelete.ApprovedLeaveId); // här, eftersom ApprovedLeaveId är null ifall det inte är är "approved"
+
+                if (leaveToDelete == null)
+                {
+                    return Results.NotFound();
+                }
+                var deletedLeave = await repo.Delete(leaveToDelete.ApprovedLeaveId);
+
                 return deletedLeave != null ? Results.Ok(deletedLeave) : Results.NotFound();
             }
             catch (Exception e)

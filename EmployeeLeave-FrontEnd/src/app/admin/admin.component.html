@@ -66,7 +66,31 @@
       </tbody>
     </table>
   </div>
+  <hr />
+
+<div *ngFor="let leave of leaveTypesTotalDays">
+  {{leave.leaveTypeID}}
+  {{leave.name}}
+  {{leave.maximumDays}}
+  {{leave.totalDaysUsed}}
 </div>
+  <form #requestForm="ngForm">
+    <div class="form-group">
+      <label for="leaveID">Leave ID</label>
+      <input type="text" id="leaveID" name="leaveID" [(ngModel)]="newLeave.leaveTypeID" required>
+    </div>
+    <div class="form-group">
+      <label for="userID">Leave name</label>
+      <input type="text" id="userID" name="userID" [(ngModel)]="newLeave.name" required>
+    </div>
+    <div class="form-group">
+      <label for="leaveTypeID">Maximum leave days</label>
+      <input type="text" id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newLeave.maximumDays" required>
+    </div>
+    <button (click)="CreateLeaveType()" class="btn btn-primary">Create Leave Type</button>
+    <button (click)="EditLeaveType(newLeave.leaveTypeID)" class="btn btn-info">Edit Leave Type</button>
+    <button (click)="DeleteLeaveType(newLeave.leaveTypeID)">Delete Leave Type</button>
+  </form>
 
 <hr />
 

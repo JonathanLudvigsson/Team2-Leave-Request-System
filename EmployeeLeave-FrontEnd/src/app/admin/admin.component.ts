@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {RequestDTO} from '../models/requestdto';
 import {UserLeaveBalance} from '../models/userleavebalance';
 import { ApprovedLeave } from '../models/approvedleave';
+import { LeaveTypeDTO } from '../models/leavetypedto';
 
 @Component({
   selector: 'app-admin',
@@ -34,9 +35,14 @@ export class AdminComponent {
 
   currentSort: string = ''
 
+  leaveTypes: LeaveType[] = []
+
+  leaveTypesTotalDays: LeaveTypeDTO[] = []
+
   ngOnInit() {
     this.GetAllRequests()
     this.GetAllUsers()
+    this.GetTotalLeaveTypeDays()
     this.AuthenticateAdmin()
   }
 
@@ -122,9 +128,24 @@ export class AdminComponent {
 
   DeleteRequest(id: string) {
     this.baseService.Delete<Request>("request/delete/", id).subscribe(response => {
-      this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
+      if (this.baseService.Get<ApprovedLeave>("approved-leaves/request/", response.requestID)) {
+        this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", id).subscribe(response => {
 
-      })
+        })
+      }
+
+    })
+  }
+
+  GetAllLeaveTypes() {
+    this.baseService.GetAll<LeaveType>("leavetypes").subscribe(response => {
+      this.leaveTypes = response
+    })
+  }
+
+  GetTotalLeaveTypeDays() {
+    this.baseService.GetAll<LeaveTypeDTO>("leavetypes/daysused").subscribe(response => {
+      this.leaveTypesTotalDays = response
     })
   }
 
