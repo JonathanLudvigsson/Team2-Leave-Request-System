@@ -2,35 +2,69 @@
   <h1>Welcome to admin component</h1>
   <button (click)="GetAllRequests()">Update requests</button>
   <div class="dropdown">
-    <button class="dropbtn">Choose status</button>
+    <button class="dropbtn">Dropdown</button>
     <div class="dropdown-content">
       <button (click)="SortRequests('Pending')">Pending</button>
       <button (click)="SortRequests('Approved')">Approved</button>
       <button (click)="SortRequests('Declined')">Declined</button>
     </div>
   </div>
+
+
+  <div class="request-list">
+    <div *ngFor="let request of requestsToShow" class="request-item">
+      <div class="request-details">
+        {{request.requestID}}
+        {{request.leaveStatus}}
+        {{request.userID}}
+        {{request.leaveTypeID}}
+        {{request.startDate}}
+        {{request.endDate}}
+      </div>
+      <div class="request-actions">
+        <button (click)="ApproveOrDenyRequest(request, true)" class="btn-approve">Approve</button>
+        <button (click)="ApproveOrDenyRequest(request, false)" class="btn-deny">Deny</button>
+      </div>
+    </div>
+  </div>
+
   <div *ngFor="let request of requestsToShow">
     {{request.userName}}
     {{request.leaveTypeName}}
+    {{request.leaveStatus}}
     {{request.startDate.split("T")[0]}}
     {{request.endDate.split("T")[0]}}
-    {{request.daysLeft}}
-    {{request.leaveStatus}}
-    <button *ngIf="request.leaveStatus != 'Approved' && request.leaveStatus != '1'" (click)="ApproveOrDenyRequest(request, true)">Approve</button>
-    <button *ngIf="request.leaveStatus != 'Declined' && request.leaveStatus != '2'" (click)="ApproveOrDenyRequest(request, false)">Deny</button>
-    <button *ngIf="request.leaveStatus != 'Pending' && request.leaveStatus != '0'" (click)="DeleteRequest(request.requestID)">Delete</button>
+    <button (click)="ApproveOrDenyRequest(request, true)">Approve</button>
+    <button (click)="ApproveOrDenyRequest(request, false)">Deny</button>
   </div>
 </div>
 
-  <hr />
+<hr />
 
-  <div *ngFor="let user of users">
-    {{user.id}}
-    {{user.name}}
-    {{user.address}}
-    {{user.email}}
-    {{user.password}}
-    {{user.isAdmin}}
+
+
+<hr />
+<div class="container">
+  <div class="show-users">
+    <h1>All users</h1>
+    <table *ngFor="let user of users" class="user-table">
+      <thead>
+        <tr>
+          <td>User id</td>
+          <td>Name</td>
+          <td>Address</td>
+          <td>Email</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.address}}</td>
+          <td>{{user.email}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <hr />
 
@@ -58,3 +92,22 @@
     <button (click)="DeleteLeaveType(newLeave.leaveTypeID)">Delete Leave Type</button>
   </form>
 
+<hr />
+
+<form #requestForm="ngForm">
+  <div class="form-group">
+    <label for="leaveID">Leave ID</label>
+    <input type="text" id="leaveID" name="leaveID" [(ngModel)]="newLeave.leaveTypeID" required>
+  </div>
+  <div class="form-group">
+    <label for="userID">Leave name</label>
+    <input type="text" id="userID" name="userID" [(ngModel)]="newLeave.name" required>
+  </div>
+  <div class="form-group">
+    <label for="leaveTypeID">Maximum leave days</label>
+    <input type="text" id="leaveTypeID" name="leaveTypeID" [(ngModel)]="newLeave.maximumDays" required>
+  </div>
+  <button (click)="CreateLeaveType()">Create Leave Type</button>
+  <button (click)="EditLeaveType(newLeave.leaveTypeID)">Edit Leave Type</button>
+  <button (click)="DeleteLeaveType(newLeave.leaveTypeID)">Delete Leave Type</button>
+</form>
