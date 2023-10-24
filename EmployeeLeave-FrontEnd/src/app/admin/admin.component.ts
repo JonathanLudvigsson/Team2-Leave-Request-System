@@ -126,7 +126,11 @@ export class AdminComponent {
       request.leaveStatus = '2'
     }
     this.baseService.Update<Request>("request/update/", request.requestID, request).subscribe(response => {
-      console.log(response)
+      if (request.leaveStatus == '2' || request.leaveStatus == "Declined") {
+        this.baseService.Delete<ApprovedLeave>("approved-leaves/request/", request.requestID).subscribe(response => {
+
+        })
+      }
     })
   }
 
