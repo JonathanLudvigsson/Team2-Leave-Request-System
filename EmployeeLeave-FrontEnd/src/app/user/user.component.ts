@@ -176,8 +176,7 @@ export class UserComponent {
 
   getUserLeaveBalance() {
     const id = this.myToken.UserId;
-    const url = `https://localhost:7268/api/user-leave-balances/user/${id}`;
-    this.http.get(url).subscribe((response) => {
+    this.http.get(this.baseUrl + "user-leave-balances/user/" + id).subscribe((response) => {
       this.userLeaveBalanceData = response;
       console.log(this.userLeaveBalanceData)
     }, (error) => {
@@ -187,3 +186,5 @@ export class UserComponent {
 
 
 }
+
+
