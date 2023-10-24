@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { LandingComponent } from './landing/landing.component';
 import { AdminComponent } from './admin/admin.component';
+import { ViewUsersComponent } from './view-users/view-users.component';
+import { ConfigLeaveTypesComponent } from './config-leave-types/config-leave-types.component';
  
 
 const routes: Routes = [
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'viewUsers', component: ViewUsersComponent },
+  { path:'configLeaveTypes', component:ConfigLeaveTypesComponent}
 ];
 
 @NgModule({

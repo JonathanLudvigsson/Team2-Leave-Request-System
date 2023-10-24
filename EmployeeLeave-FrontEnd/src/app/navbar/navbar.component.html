@@ -4,6 +4,8 @@
     <h3 class="list-inline-item" *ngIf="!isLoggedIn"><a class="nav-link" href="/login">Login</a></h3>
     <h3 class="list-inline-item" *ngIf="isLoggedIn && isAdmin"><a class="nav-link" href="/admin">Admin Dashboard</a></h3>
     <h3 class="list-inline-item" *ngIf="isLoggedIn && !isAdmin"><a class="nav-link" href="/user">User Dashboard</a></h3>
+    <h3 class="list-inline-item" *ngIf="isLoggedIn && isAdmin"><a class="nav-link" href="/viewUsers">View Users In System</a></h3>
+    <h3 class="list-inline-item" *ngIf="isLoggedIn && isAdmin"><a class="nav-link" href="/configLeaveTypes">Configure Leavetypes</a></h3>
     <h3 class="list-inline-item" *ngIf="isLoggedIn"><a class="nav-link" (click)="logout()" href="#">Logout</a></h3>
   </div>
 </div>

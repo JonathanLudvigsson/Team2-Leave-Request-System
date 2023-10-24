@@ -1,0 +1,130 @@
+/* Shared Styles */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 50%;
+  text-align: center;
+  background-color: #f5f5f5;
+  margin-top: 5em;
+  margin-bottom: 3em;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+button,
+.dropbtn {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px 1px gray;
+  transition: 0.25s;
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  z-index: 1;
+  top: 100%;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+hr {
+  margin: 20px 0;
+}
+
+.show-leaves {
+  text-align: center;
+  margin-bottom:2em;
+}
+
+.leaves-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+  .leaves-table thead {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+
+  .leaves-table th, .leaves-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+  }
+
+  .leaves-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .leaves-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+  }
+
+.form-group input {
+  width: 30%;
+}
+
+button:hover {
+  box-shadow: none;
+}
+
+/*Pending Styles*/
+
+.pending-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px 1px gray;
+  margin: 3em;
+  background-color: #f5f5f5;
+ 
+}
+
+  .pending-list input {
+    width: 100%;
+  }
+
+.pending-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.request-details {
+  background-color: white;
+}
+
+.pending-list h1 {
+  margin-top: 1em;
+}
