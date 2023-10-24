@@ -163,13 +163,15 @@ namespace EmployeeLeaveAPI.Endpoints
                             return Results.BadRequest("Not enough days left");
                         }
 
-                        if (updatedRequest is { LeaveStatus: Status.Approved })
+                        // if the request is approved or declined
+                        if (updatedRequest.LeaveStatus != Status.Pending)
                         {
                             await approvedLeavesService.CreateApprovedLeave(updatedRequest.StartDate,
                                 updatedRequest.EndDate, updatedRequest.UserID, updatedRequest.LeaveTypeID,
                                 updatedRequest.RequestID);
 
-                            var emailResult = await emailService.CreateEmail(updatedRequest.UserID);
+                            var emailResult = await emailService.CreateEmail(updatedRequest.UserID,
+                                updatedRequest.LeaveStatus);
                             var saveEmailResult = await emailService.SaveEmailToDbAsync(emailResult.email);
                             var enqueueEmailResult = await emailService.EnqueueEmail(emailResult.email);
 
