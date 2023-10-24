@@ -38,7 +38,7 @@ public class UserLeaveBalanceService : IUserLeaveBalanceService
             foreach (var leaveType in leaveTypes)
             {
                 var daysTaken = leaveGroups.FirstOrDefault(x => x.LeaveTypeId == leaveType.LeaveTypeID)?.DaysTaken ?? 0;
-                var daysLeft = leaveType.MaximumDays - daysTaken + 11;
+                var daysLeft = leaveType.MaximumDays - daysTaken;
                 
                 result.Add(new UserLeaveBalanceDTO
                 {
