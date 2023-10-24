@@ -1,5 +1,6 @@
 <div class="container">
   <h1>Incoming Requests To Review</h1>
+  <button (click)="GetAllRequests()">Refresh</button>
   <div class="dropdown">
     <button class="dropbtn" style="margin-bottom:15px; height:2.5em; align-items:center; ">Sort requests</button>
     <div class="dropdown-content" style="border: 1px solid;">
@@ -37,7 +38,7 @@
 <div class="container">
   <div class="show-users">
     <h1>All users</h1>
-    <table *ngFor="let user of users" class="user-table">
+    <table class="user-table">
       <thead>
         <tr>
           <td>User id</td>
@@ -46,7 +47,7 @@
           <td>Email</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngFor="let user of users">
         <tr>
           <td>{{user.id}}</td>
           <td>{{user.name}}</td>
@@ -60,6 +61,31 @@
 </div>
 
 <hr />
+
+<div class="container">
+  <div class="show-leaves">
+    <h1>All leave types</h1>
+    <table class="leaves-table">
+      <thead>
+        <tr>
+          <td>Leave ID</td>
+          <td>Name</td>
+          <td>Maximum days</td>
+          <td>Total days used</td>
+        </tr>
+      </thead>
+      <tbody *ngFor="let leave of leaveTypesTotalDays">
+        <tr>
+          <td>{{leave.leaveTypeID}}</td>
+          <td>{{leave.name}}</td>
+          <td>{{leave.maximumDays}}</td>
+          <td>{{leave.totalDaysUsed}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr />
+</div>
 
 <div class="pending-position">
   <div class="pending-list">
@@ -83,7 +109,8 @@
     </form>
   </div>
 </div>
-<hr />  
+<hr />
+
 <div class="form-position">
   <div class="export-form">
     <h1>Export</h1>
