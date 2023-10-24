@@ -176,7 +176,7 @@ export class UserComponent {
 
   getUserLeaveBalance() {
     const id = this.myToken.UserId;
-    this.http.get(this.baseUrl + "user-leave-balances/user/" + id).subscribe((response) => {
+    this.baseService.GetAll("user-leave-balances/user/" + id).subscribe((response) => {
       this.userLeaveBalanceData = response;
       console.log(this.userLeaveBalanceData)
     }, (error) => {
