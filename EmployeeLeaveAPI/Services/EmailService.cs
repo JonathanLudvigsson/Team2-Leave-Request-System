@@ -22,19 +22,20 @@ public class EmailService : IEmailService
         _configuration = configuration;
     }
 
-    public async Task<(bool isSuccess, string message, Email? email)> CreateEmail(int userId)
+    public async Task<(bool isSuccess, string message, Email? email)> CreateEmail(int userId, Status newStatus)
     {
         try
         {
             var user = _userRepository.Get(userId).Result;
 
             if (user == null) return (false, "User not found", null);
-
+            
             var email = new Email
             {
                 To = user.Email,
-                Subject = "Your leave request has been approved",
-                Body = "Your leave request has been approved"
+                Subject = "Your leave request has been reviewed",
+                Body = $"Your leave request has been reviewed and it is now {newStatus}",
+
             };
 
             return (true, "Email created", email);
@@ -107,6 +108,7 @@ public class EmailService : IEmailService
             email.Status = EmailStatus.Failed;
             await _emailRepository.Update(email.Id, email);
             _logger.LogError(e, "Error sending email");
+            BackgroundJob.Delete(email.Id.ToString());
             return (false, "Error sending email");
         }
     }
