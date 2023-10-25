@@ -6,24 +6,35 @@
   justify-content: center;
   height: 20em;
 }
+
 .form-group {
   text-align: center;
 }
+
 .login-form {
   background: #f5f5f5;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  text-align: center; 
-}
-.input-group {
   text-align: center;
+  margin-top:13em;
 }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width:20em;
+  height:10em;
+  
+}
+
 input,
 button {
   margin: 10px 0;
   display: block;
 }
+
 h1 {
   font-size: 24px;
   margin-bottom: 20px;
