@@ -27,6 +27,7 @@
 
 <div class="form-position">
   <div class="form-container" *ngIf="showForm">
+    {{errorMessage}}
     <h2>Apply for leave</h2>
     <form (ngSubmit)="onSubmit()" #requestForm="ngForm">
       <div>

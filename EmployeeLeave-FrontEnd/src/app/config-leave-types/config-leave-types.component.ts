@@ -25,6 +25,8 @@ export class ConfigLeaveTypesComponent {
     this.GetTotalLeaveTypeDays();
   }
 
+  errorMessage: string = ''
+
   requests: Request[] = []
 
   requestsToShow: RequestDTO[] = []
@@ -61,19 +63,29 @@ export class ConfigLeaveTypesComponent {
   CreateLeaveType() {
     this.baseService.Create<LeaveType>("leavetypes", this.newLeave).subscribe(response => {
       this.GetTotalLeaveTypeDays()
-    })
+    },
+      error => {
+        this.errorMessage = "New leave type could not be created."
+      })
   }
 
   EditLeaveType(id: string) {
     this.baseService.Update<LeaveType>("leavetypes/", id, this.newLeave).subscribe(response => {
       this.GetTotalLeaveTypeDays()
-    })
+    },
+      error => {
+        this.errorMessage = "Leave Type with id " + id + " could not be updated."
+      })
   }
 
   DeleteLeaveType(id: string) {
     this.baseService.Delete<LeaveType>("leavetypes/", id).subscribe(response => {
       this.GetTotalLeaveTypeDays()
-    })
+    },
+      error => {
+        this.errorMessage = "Leave Type with id " + id + " not found."
+      })
+    
   }
 
 

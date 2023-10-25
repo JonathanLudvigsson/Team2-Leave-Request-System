@@ -20,6 +20,8 @@ import { HttpClient } from '@angular/common/http';
 
 export class UserComponent {
 
+  errorMessage: string = ''
+
   requestStatus: string[] = ['Pending', 'Approved', 'Declined', ''];
 
   myToken: DecodedToken = {
@@ -139,7 +141,10 @@ export class UserComponent {
     this.baseService.Create<Request>("request/post/", request).subscribe((response) => {
       this.request = response;
       this.ngOnInit();
-    });
+    },
+      error => {
+        this.errorMessage = "Request could not be created. Make sure dates and amount of days are valid."
+      });
   }
 
   getRequestCount(status: string): number {
@@ -164,6 +169,7 @@ export class UserComponent {
           this.ngOnInit();
         },
         (error) => {
+          this.errorMessage = "Request with id " + id + " could not be deleted."
           console.error('Error:', error);
         }
       );

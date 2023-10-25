@@ -32,6 +32,8 @@ export class LoginComponent {
 
   users: User[] = [];
 
+  errorMessage: string = ''
+
   Login(): void {
     let decodedToken: DecodedToken
 
@@ -59,6 +61,11 @@ export class LoginComponent {
 
         }
       }
-    })
+      
+    }
+      , error => {
+        this.errorMessage = "Incorrect email or password. Try again."
+      })
+
   }
 }

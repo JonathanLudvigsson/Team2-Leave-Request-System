@@ -166,7 +166,7 @@ namespace EmployeeLeaveAPI.Endpoints
                         // if the request is approved or declined
                         if (updatedRequest.LeaveStatus != Status.Pending)
                         {
-                            if (updatedRequest.LeaveStatus != Status.Declined && updatedRequest.LeaveStatus != Status.Pending)
+                            if (updatedRequest.LeaveStatus == Status.Approved)
                             {
                                 await approvedLeavesService.CreateApprovedLeave(updatedRequest.StartDate,
                                 updatedRequest.EndDate, updatedRequest.UserID, updatedRequest.LeaveTypeID,
