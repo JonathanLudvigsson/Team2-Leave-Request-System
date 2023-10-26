@@ -44,7 +44,7 @@ public class ApprovedLeavesServiceTests
         // Act
         var totalDays = await service.CalculateActualLeaveDays(startDate, endDate);
 
-        // Assert
+        // Assertt
         Assert.Equal(4, totalDays); // Because Oct 1 is Sunday
     }
 }
