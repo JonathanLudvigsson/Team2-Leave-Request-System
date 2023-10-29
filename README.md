@@ -1,11 +1,10 @@
 
-# Group School project: Leave Request System
-
-**Team 2**
+# Group School project: Leave Request System  
 
 ## Access
 
 - Access the Website here https://proud-hill-0fce4a510.4.azurestaticapps.net/ to try it out.
+- Login with "employee-test@employee-leave-test.com" and password "test" or "admin-test@employee-leave-test.com" and password "test" to test the functionallity.
 
 ## Description
 
