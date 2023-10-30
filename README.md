@@ -3,7 +3,7 @@
 
 ## Access
 
-- Access the Website here https://proud-hill-0fce4a510.4.azurestaticapps.net/ to try it out.
+- Access the Website here https://nice-plant-0f6382803.4.azurestaticapps.net/ to try it out.
   
 Login credentials to test functionallity:
 - Email: `employee-test@employee-leave-test.com` Password: `test`  
