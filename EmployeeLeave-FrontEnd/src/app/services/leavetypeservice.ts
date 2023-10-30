@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 })
 
 export class LeaveTypeService {
-  baseUrl: string = 'https://localhost:7268/api/leavetypes'
+  baseUrl: string = 'https://team2webapi.azurewebsites.net/api/leavetypes'
 
   constructor(private http: HttpClient) {
 

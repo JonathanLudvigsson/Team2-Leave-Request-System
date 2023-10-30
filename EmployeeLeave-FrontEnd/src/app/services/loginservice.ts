@@ -9,7 +9,7 @@ import { LogInResult } from "../models/loginresult";
 })
 
 export class LogInService {
-  baseUrl: string = 'https://localhost:7268/api/auth/login'
+  baseUrl: string = 'https://team2webapi.azurewebsites.net/api/auth/login'
 
   constructor(private http: HttpClient) {
 

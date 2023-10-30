@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 })
 
 export class BaseService {
-  baseUrl: string = 'https://localhost:7268/api/'
+  baseUrl: string = 'https://team2webapi.azurewebsites.net/api/'
 
   constructor(private http: HttpClient) {
 
