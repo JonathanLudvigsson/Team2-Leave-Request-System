@@ -24,7 +24,9 @@
               "src/favicon.ico",
               "src/assets",
               "src/web.config",
-              "src/routes.json"
+              "src/routes.json",
+              "src/staticwebapp.config.json",
+              "src/testing-text.txt"
             ],
             "styles": [
               "src/styles.css",
