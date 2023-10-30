@@ -99,8 +99,8 @@ public class AuthService : IAuthService
             };
 
             var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
+                _configuration["Jwt:Issuer"] ?? throw new Exception("JWT issuer not found"),
+                _configuration["Jwt:Audience"] ?? throw new Exception("JWT audience not found"),
                 claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: credentials
