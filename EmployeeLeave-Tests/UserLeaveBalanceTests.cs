@@ -76,7 +76,7 @@ namespace EmployeeLeave_Tests
         }
         
         [Fact]
-        public async Task HasNotEnoughDaysLeftAsync_ReturnsFalse()
+        public async Task HasNotEnoughDaysLeftAsync_ReturnsTrueOnDaysLeft()
         {
             // Arrange
             var userId = 1;
@@ -98,6 +98,31 @@ namespace EmployeeLeave_Tests
 
             // Assert
             Assert.True(result);
+        }
+        
+        [Fact]
+        public async Task HasNotEnoughDaysLeftAsync_ReturnsFalseOnNotEnoughDaysLeft()
+        {
+            // Arrange
+            var userId = 1;
+            var leaveTypeId = 1;
+            var startDate = new DateTime(2023, 1, 1);
+            var endDate = new DateTime(2023, 1, 31);
+
+            _mockApprovedLeaveRepo.GetByUserId(userId)
+                .Returns(new List<ApprovedLeave>
+                {
+                    new ApprovedLeave { LeaveTypeId = 1, TotalDays = 9 }
+                });
+
+            _mockLeaveTypeRepo.Get(leaveTypeId)
+                .Returns(new LeaveType { LeaveTypeID = 1, MaximumDays = 30, Name = "Vacation" });
+
+            // Act
+            var result = await _service.HasEnoughDaysLeftAsync(userId, leaveTypeId, startDate, endDate);
+
+            // Assert
+            Assert.False(result);
         }
     }
 }
